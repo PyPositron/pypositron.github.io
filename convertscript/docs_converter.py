@@ -1,6 +1,7 @@
 import markdown_it
 import linkify_it
 import os
+import re
 md = markdown_it.MarkdownIt("gfm-like")
 md_string="""
 # This is an example
@@ -36,8 +37,12 @@ def convert_markdown_to_html(md_string, sidebar_links, template_path="template.h
     
     with open(template_path, "r", encoding="utf-8") as f:
         template = f.read()
-    rendered_html = rendered_html.replace("<a href=\"","<a href=\"/") # Ensure links point to the right path
-                                                                      # This only replaces the links in the raw HTML, not the sidebar links
+    
+    rendered_html = re.sub(
+        r'<a href="(?!https?://|http://|/)([^"]+)"',
+        r'<a href="/\1"',
+        rendered_html
+    )
     docsfile = template.replace("<!--INSERT CONVERTED HTML HERE-->", rendered_html).replace("<!--INSERT SIDEBAR LINKS HERE-->", sidebar_links)
     return docsfile
 def sidebar_link(filename):
