@@ -429,7 +429,7 @@
 <li><code>&quot;div &gt; p&quot;</code>: Selects all <code>&lt;p&gt;</code> elements where the parent is a <code>&lt;div&gt;</code> (child)</li>
 <li><code>&quot;div + p&quot;</code>: Selects the first <code>&lt;p&gt;</code> element that is placed immediately after <code>&lt;div&gt;</code> (adjacent sibling)</li>
 </ul>
-<p><strong>For complete CSS selectors reference:</strong> <a href="https://www.w3schools.com/cssref/css_selectors.asp">W3Schools CSS Selectors</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">MDN CSS Selectors</a></p>
+<p><strong>For complete CSS selectors reference:</strong> <a href="/https://www.w3schools.com/cssref/css_selectors.asp">W3Schools CSS Selectors</a> | <a href="/https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">MDN CSS Selectors</a></p>
 <h2>PositronWindowWrapper (The <code>ui</code> parameter)</h2>
 <p>A wrapper for a PyPositron window with event loop thread and context. This is the object passed to your main function.</p>
 <h3>Key Attributes</h3>
@@ -440,7 +440,7 @@
 <li><code>exposed</code>: The ExposedFunctions object for interacting with exposed Python functions</li>
 <li><code>htmlwindow</code>: The HTMLWindow object providing JavaScript window functionality</li>
 </ul>
-<p>For more information: <a href="PositronWindowWrapper">PositronWindowWrapper</a></p>
+<p>For more information: <a href="/PositronWindowWrapper">PositronWindowWrapper</a></p>
 <h2>Document</h2>
 <p>Provides methods for interacting with the DOM. Available as <code>ui.document</code> in your main function.</p>
 <h3>Essential Properties</h3>
@@ -473,7 +473,7 @@
         print(&quot;Button clicked!&quot;)
     button.addEventListener(&quot;click&quot;, on_click)
 </code></pre>
-<p>For more information: <a href="Document">Document</a></p>
+<p>For more information: <a href="/Document">Document</a></p>
 <h2>Element</h2>
 <p>Represents a DOM element. Returned by document methods like <code>getElementById</code>.</p>
 <h3>Essential Properties</h3>
@@ -508,7 +508,7 @@
         button.innerText = &quot;Clicked!&quot;
     button.addEventListener(&quot;click&quot;, handle_click)
 </code></pre>
-<p>For more information: <a href="Element">Element</a></p>
+<p>For more information: <a href="/Element">Element</a></p>
 <h2>Style</h2>
 <p>Represents the CSS style of an element. Allows direct CSS property manipulation.</p>
 <h3>Usage</h3>
@@ -526,7 +526,7 @@ element.style.display = &quot;none&quot;
 <li><code>width</code>, <code>height</code>: Element dimensions</li>
 <li><code>margin</code>, <code>padding</code>: Spacing</li>
 </ul>
-<p>For more information: <a href="Style">Style</a></p>
+<p>For more information: <a href="/Style">Style</a></p>
 <h2>ElementList</h2>
 <p>Represents a collection of DOM elements. Returned by methods like <code>getElementsByClassName</code>.</p>
 <h3>Usage</h3>
@@ -542,7 +542,7 @@ for button in buttons:
 # Get count
 count = len(buttons)
 </code></pre>
-<p>For more information: <a href="ElementList">ElementList</a></p>
+<p>For more information: <a href="/ElementList">ElementList</a></p>
 <h2>HTMLWindow</h2>
 <p>Provides JavaScript window functionality. Available as <code>ui.htmlwindow</code>.</p>
 <h3>Essential Methods</h3>
@@ -560,7 +560,7 @@ count = len(buttons)
         name = ui.htmlwindow.prompt(&quot;Enter your name:&quot;)
         print(f&quot;Hello, {name}!&quot;)
 </code></pre>
-<p>For more information: <a href="HTMLWindow">HTMLWindow</a></p>
+<p>For more information: <a href="/HTMLWindow">HTMLWindow</a></p>
 <h2>Global Functions</h2>
 <h3>openUI()</h3>
 <p>The main function to create and display a PyPositron window.</p>
@@ -581,7 +581,7 @@ py_positron.openUI(&quot;index.html&quot;, main=main, width=800, height=600, tit
 <li><code>title: str</code>: Window title (default: &quot;Window&quot;)</li>
 <li><code>functions: list</code>: List of Python functions to expose to JavaScript</li>
 </ul>
-<p>For more information: <a href="Global-Functions">Global Functions</a></p>
+<p>For more information: <a href="/Global-Functions">Global Functions</a></p>
 <h2>Python in HTML (<code>&lt;py&gt;</code> tags)</h2>
 <p>PyPositron supports embedding Python code directly in HTML using <code>&lt;py&gt;</code> tags:</p>
 <h3>Inline Python Code</h3>
@@ -600,18 +600,18 @@ button.innerText = &quot;Updated from Python&quot;
 <li><code>document</code>: The Document object for DOM manipulation</li>
 <li><code>exposed</code>: Access to exposed functions</li>
 </ul>
-<p>For more information: <a href="Python-HTML-Integration">Python in HTML</a></p>
+<p>For more information: <a href="/Python-HTML-Integration">Python in HTML</a></p>
 <h2>Additional Classes</h2>
 <h3>Console</h3>
 <p>Browser console for debugging. Available as <code>ui.htmlwindow.console</code>.</p>
 <p><strong>Key Methods:</strong> <code>log()</code>, <code>error()</code>, <code>warn()</code>, <code>clear()</code></p>
-<p>For more information: <a href="Console">Console</a></p>
+<p>For more information: <a href="/Console">Console</a></p>
 <h3>History, Location, Navigator, Screen</h3>
 <p>Browser information and navigation objects available through <code>ui.htmlwindow</code>.</p>
-<p>For more information: <a href="Browser-Objects">Browser Objects</a></p>
+<p>For more information: <a href="/Browser-Objects">Browser Objects</a></p>
 <h3>PositronContext, ExposedFunctions</h3>
 <p>Internal classes for managing execution context and exposed functions.</p>
-<p>For more information: <a href="Internal-Classes">Internal Classes</a></p>
+<p>For more information: <a href="/Internal-Classes">Internal Classes</a></p>
 
                 
                 <!-- 
