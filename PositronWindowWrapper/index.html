@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPositron Docs - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Documentation Content Styles */
+        .docs-content {
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .docs-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .docs-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .docs-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .docs-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+            color: #374151;
+        }
+
+        .docs-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            color: #4b5563;
+        }
+
+        .docs-content p {
+            margin-bottom: 1rem;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .docs-content ul, .docs-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .docs-content ul {
+            list-style-type: disc;
+        }
+
+        .docs-content ol {
+            list-style-type: decimal;
+        }
+
+        .docs-content li {
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .docs-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .docs-content a:hover {
+            color: #1d4ed8;
+        }
+
+        .docs-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .docs-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .docs-content th, .docs-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .docs-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Inline code styling */
+        .docs-content code:not([class*="language-"]) {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            padding: 0.25rem 0.5rem !important;
+            border-radius: 0.375rem !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            font-weight: 500;
+        }
+
+        /* Code block container */
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        /* Override Prism.js styles */
+        .docs-content pre[class*="language-"] {
+            background: #1f2937 !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
+            margin: 1.5rem 0 !important;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .docs-content code[class*="language-"] {
+            background: transparent !important;
+            color: #f9fafb !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5;
+        }
+
+        /* Copy button for code blocks */
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            color: #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background: rgba(75, 85, 99, 0.8);
+            color: #f9fafb;
+        }
+
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        /* Sidebar styles */
+        .sidebar-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .sidebar-link.active {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 50;
+                background: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border: 1px solid #fed7aa;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header -->
+    <header class="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold">PyPositron Docs</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="text-sm font-medium hover:text-blue-600 transition-colors">Home</a>
+                <a href="/Home" class="text-sm font-medium text-blue-600">Docs</a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+         <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 h-screen sticky top-16 overflow-y-auto">
+            <div class="p-6">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Documentation</div>
+                    <nav class="space-y-1">
+                        <!--<a href="ORIGINALNAME.html" class="sidebar-link active">FORMATTEDNAME</a>-->
+                        <a href="/Browser-Objects" class="sidebar-link">Browser Objects</a>
+<a href="/CLI-Commands" class="sidebar-link">Cli Commands</a>
+<a href="/Document" class="sidebar-link">Document</a>
+<a href="/Element" class="sidebar-link">Element</a>
+<a href="/ElementList" class="sidebar-link">Elementlist</a>
+<a href="/Getting-Started" class="sidebar-link">Getting Started</a>
+<a href="/Global-Functions" class="sidebar-link">Global Functions</a>
+<a href="/Home" class="sidebar-link">Home</a>
+<a href="/HTMLWindow" class="sidebar-link">Htmlwindow</a>
+<a href="/Installation" class="sidebar-link">Installation</a>
+<a href="/Internal-Classes" class="sidebar-link">Internal Classes</a>
+<a href="/Library-Reference" class="sidebar-link">Library Reference</a>
+<a href="/PositronWindowWrapper" class="sidebar-link">Positronwindowwrapper</a>
+<a href="/Python-HTML-Integration" class="sidebar-link">Python Html Integration</a>
+<a href="/Quick-Start" class="sidebar-link">Quick Start</a>
+<a href="/Style" class="sidebar-link">Style</a>
+<a href="/Troubleshooting" class="sidebar-link">Troubleshooting</a>
+<a href="/Virtual-Environments" class="sidebar-link">Virtual Environments</a>
+                    </nav>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-8 max-w-4xl">
+            <div class="docs-content">
+                <!-- 
+                ============================================
+                INSERT CONVERTED UNSTYLED DOCS HTML HERE
+                ============================================
+                
+                This is where you should place the automatically converted
+                HTML content from your documentation source (Markdown, etc.).
+                All styling is handled by CSS classes above, so no inline
+                styles are needed.
+                
+                Example of what the converted HTML should look like:
+                -->
+                
+                <h1>PositronWindowWrapper Class</h1>
+<p>The PositronWindowWrapper class is the main interface object returned by <code>openUI()</code>. It serves as a container that provides access to all PyPositron functionality, including DOM manipulation, window management, and Python-JavaScript integration. This object is passed as the <code>ui</code> parameter to your main function.</p>
+<h2>Overview</h2>
+<p>The PositronWindowWrapper acts as the central hub for your PyPositron application. Through this object, you can:</p>
+<ul>
+<li>Access the DOM via the <code>document</code> property</li>
+<li>Use browser window functionality via the <code>htmlwindow</code> property</li>
+<li>Call exposed Python functions via the <code>exposed</code> property</li>
+<li>Manage the execution context via the <code>context</code> property</li>
+<li>Control the underlying webview window via the <code>window</code> property</li>
+</ul>
+<h2>Properties</h2>
+<h3>Core Components</h3>
+<ul>
+<li><code>window</code>: The underlying webview.Window object that provides low-level window control</li>
+<li><code>context -&gt; PositronContext</code>: The PositronContext object for managing execution context, variables, and event handlers</li>
+<li><code>document -&gt; Document</code>: The Document object for DOM manipulation and element selection</li>
+<li><code>exposed -&gt; ExposedFunctions</code>: The ExposedFunctions object for interacting with Python functions exposed to JavaScript</li>
+<li><code>htmlwindow -&gt; HTMLWindow</code>: The HTMLWindow object providing JavaScript window functionality (dialogs, timers, browser objects)</li>
+</ul>
+<h3>Threading</h3>
+<ul>
+<li><code>event_thread</code>: The threading.Thread object responsible for handling events and maintaining the UI responsiveness</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Basic Application Structure</h3>
+<pre><code class="language-python">import py_positron
+
+def main(ui):
+    # ui is a PositronWindowWrapper instance
+    
+    # Access the document for DOM manipulation
+    title = ui.document.getElementById(&quot;title&quot;)
+    title.innerText = &quot;Welcome to PyPositron!&quot;
+    
+    # Use browser functionality
+    ui.htmlwindow.alert(&quot;Application loaded successfully!&quot;)
+    
+    # Access exposed functions (if any were provided)
+    if hasattr(ui, 'exposed'):
+        # Use exposed functions here
+        pass
+
+py_positron.openUI(&quot;index.html&quot;, main=main)
+</code></pre>
+<h3>Comprehensive Application Example</h3>
+<pre><code class="language-python">import py_positron
+import json
+import time
+
+def save_data(data):
+    &quot;&quot;&quot;Example exposed function&quot;&quot;&quot;
+    with open(&quot;app_data.json&quot;, &quot;w&quot;) as f:
+        json.dump(data, f)
+    return &quot;Data saved successfully&quot;
+
+def load_data():
+    &quot;&quot;&quot;Example exposed function&quot;&quot;&quot;
+    try:
+        with open(&quot;app_data.json&quot;, &quot;r&quot;) as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def main(ui):
+    # Initialize the application
+    setup_ui(ui)
+    setup_event_handlers(ui)
+    load_saved_data(ui)
+
+def setup_ui(ui):
+    &quot;&quot;&quot;Set up the user interface&quot;&quot;&quot;
+    # Set page title
+    ui.document.title = &quot;PyPositron Data Manager&quot;
+    
+    # Update header
+    header = ui.document.getElementById(&quot;header&quot;)
+    if header:
+        header.innerText = &quot;Data Management Application&quot;
+        header.style.textAlign = &quot;center&quot;
+        header.style.color = &quot;#333&quot;
+        header.style.padding = &quot;20px&quot;
+    
+    # Style the main container
+    container = ui.document.getElementById(&quot;container&quot;)
+    if container:
+        container.style.maxWidth = &quot;800px&quot;
+        container.style.margin = &quot;0 auto&quot;
+        container.style.padding = &quot;20px&quot;
+
+def setup_event_handlers(ui):
+    &quot;&quot;&quot;Set up event handlers for UI elements&quot;&quot;&quot;
+    
+    # Save button
+    save_btn = ui.document.getElementById(&quot;saveBtn&quot;)
+    if save_btn:
+        def handle_save():
+            try:
+                # Get data from form
+                data = collect_form_data(ui)
+                
+                # Use exposed function to save data
+                message = ui.exposed.save_data(data)
+                
+                # Show success message
+                ui.htmlwindow.alert(message)
+                
+                # Log to console
+                ui.htmlwindow.console.log(f&quot;Data saved: {data}&quot;)
+                
+            except Exception as e:
+                ui.htmlwindow.alert(f&quot;Error saving data: {str(e)}&quot;)
+                ui.htmlwindow.console.error(f&quot;Save error: {e}&quot;)
+        
+        save_btn.addEventListener(&quot;click&quot;, handle_save)
+    
+    # Load button
+    load_btn = ui.document.getElementById(&quot;loadBtn&quot;)
+    if load_btn:
+        def handle_load():
+            try:
+                # Use exposed function to load data
+                data = ui.exposed.load_data()
+                
+                # Populate form with loaded data
+                populate_form_data(ui, data)
+                
+                # Show success message
+                ui.htmlwindow.alert(&quot;Data loaded successfully!&quot;)
+                
+            except Exception as e:
+                ui.htmlwindow.alert(f&quot;Error loading data: {str(e)}&quot;)
+        
+        load_btn.addEventListener(&quot;click&quot;, handle_load)
+    
+    # Clear button
+    clear_btn = ui.document.getElementById(&quot;clearBtn&quot;)
+    if clear_btn:
+        def handle_clear():
+            if ui.htmlwindow.confirm(&quot;Are you sure you want to clear all data?&quot;):
+                clear_form_data(ui)
+                ui.htmlwindow.console.log(&quot;Form data cleared&quot;)
+        
+        clear_btn.addEventListener(&quot;click&quot;, handle_clear)
+
+def collect_form_data(ui):
+    &quot;&quot;&quot;Collect data from form elements&quot;&quot;&quot;
+    data = {}
+    
+    # Text inputs
+    name_input = ui.document.getElementById(&quot;nameInput&quot;)
+    email_input = ui.document.getElementById(&quot;emailInput&quot;)
+    
+    if name_input:
+        data[&quot;name&quot;] = name_input.value
+    
+    if email_input:
+        data[&quot;email&quot;] = email_input.value
+    
+    # Select element
+    category_select = ui.document.getElementById(&quot;categorySelect&quot;)
+    if category_select:
+        data[&quot;category&quot;] = category_select.value
+    
+    # Checkboxes
+    checkboxes = ui.document.getElementsByName(&quot;preferences&quot;)
+    preferences = []
+    for checkbox in checkboxes:
+        if checkbox.checked:
+            preferences.append(checkbox.value)
+    data[&quot;preferences&quot;] = preferences
+    
+    # Add timestamp
+    data[&quot;timestamp&quot;] = time.time()
+    
+    return data
+
+def populate_form_data(ui, data):
+    &quot;&quot;&quot;Populate form elements with data&quot;&quot;&quot;
+    if not data:
+        return
+    
+    # Text inputs
+    if &quot;name&quot; in data:
+        name_input = ui.document.getElementById(&quot;nameInput&quot;)
+        if name_input:
+            name_input.value = data[&quot;name&quot;]
+    
+    if &quot;email&quot; in data:
+        email_input = ui.document.getElementById(&quot;emailInput&quot;)
+        if email_input:
+            email_input.value = data[&quot;email&quot;]
+    
+    # Select element
+    if &quot;category&quot; in data:
+        category_select = ui.document.getElementById(&quot;categorySelect&quot;)
+        if category_select:
+            category_select.value = data[&quot;category&quot;]
+    
+    # Checkboxes
+    if &quot;preferences&quot; in data:
+        checkboxes = ui.document.getElementsByName(&quot;preferences&quot;)
+        for checkbox in checkboxes:
+            checkbox.checked = checkbox.value in data[&quot;preferences&quot;]
+
+def clear_form_data(ui):
+    &quot;&quot;&quot;Clear all form data&quot;&quot;&quot;
+    # Text inputs
+    inputs = ui.document.getElementsByTagName(&quot;input&quot;)
+    for input_field in inputs:
+        if input_field.getAttribute(&quot;type&quot;) in [&quot;text&quot;, &quot;email&quot;, &quot;password&quot;]:
+            input_field.value = &quot;&quot;
+        elif input_field.getAttribute(&quot;type&quot;) == &quot;checkbox&quot;:
+            input_field.checked = False
+    
+    # Select elements
+    selects = ui.document.getElementsByTagName(&quot;select&quot;)
+    for select in selects:
+        select.selectedIndex = 0
+
+def load_saved_data(ui):
+    &quot;&quot;&quot;Load saved data on application startup&quot;&quot;&quot;
+    try:
+        data = ui.exposed.load_data()
+        if data:
+            populate_form_data(ui, data)
+            ui.htmlwindow.console.log(&quot;Saved data loaded on startup&quot;)
+    except Exception as e:
+        ui.htmlwindow.console.warn(f&quot;Could not load saved data: {e}&quot;)
+
+def on_window_close(ui):
+    &quot;&quot;&quot;Called when the window is about to close&quot;&quot;&quot;
+    ui.htmlwindow.console.log(&quot;Application closing...&quot;)
+    
+    # Optionally auto-save data before closing
+    try:
+        data = collect_form_data(ui)
+        if any(data.values()):  # If there's any data to save
+            ui.exposed.save_data(data)
+            print(&quot;Data auto-saved before closing&quot;)
+    except Exception as e:
+        print(f&quot;Error auto-saving data: {e}&quot;)
+
+# Launch the application
+py_positron.openUI(
+    &quot;data_manager.html&quot;,
+    main=main,
+    after_close=on_window_close,
+    title=&quot;PyPositron Data Manager&quot;,
+    width=900,
+    height=700,
+    functions=[save_data, load_data]
+)
+</code></pre>
+<h3>Window Management Example</h3>
+<pre><code class="language-python">import py_positron
+
+def main(ui):
+    # Window control buttons
+    setup_window_controls(ui)
+    
+    # Display window information
+    display_window_info(ui)
+    
+    # Window event handlers
+    setup_window_events(ui)
+
+def setup_window_controls(ui):
+    &quot;&quot;&quot;Set up window control buttons&quot;&quot;&quot;
+    
+    # Minimize button
+    minimize_btn = ui.document.getElementById(&quot;minimizeBtn&quot;)
+    if minimize_btn:
+        def minimize_window():
+            # Access the underlying webview window
+            ui.window.minimize()
+        
+        minimize_btn.addEventListener(&quot;click&quot;, minimize_window)
+    
+    # Maximize/Restore button
+    maximize_btn = ui.document.getElementById(&quot;maximizeBtn&quot;)
+    if maximize_btn:
+        is_maximized = False
+        
+        def toggle_maximize():
+            nonlocal is_maximized
+            if is_maximized:
+                ui.window.restore()
+                maximize_btn.innerText = &quot;Maximize&quot;
+                is_maximized = False
+            else:
+                ui.window.maximize()
+                maximize_btn.innerText = &quot;Restore&quot;
+                is_maximized = True
+        
+        maximize_btn.addEventListener(&quot;click&quot;, toggle_maximize)
+    
+    # Close button
+    close_btn = ui.document.getElementById(&quot;closeBtn&quot;)
+    if close_btn:
+        def close_window():
+            if ui.htmlwindow.confirm(&quot;Are you sure you want to close the application?&quot;):
+                ui.window.destroy()
+        
+        close_btn.addEventListener(&quot;click&quot;, close_window)
+
+def display_window_info(ui):
+    &quot;&quot;&quot;Display information about the window&quot;&quot;&quot;
+    info_div = ui.document.getElementById(&quot;windowInfo&quot;)
+    if info_div:
+        info_html = f&quot;&quot;&quot;
+        &lt;h3&gt;Window Information&lt;/h3&gt;
+        &lt;p&gt;&lt;strong&gt;Title:&lt;/strong&gt; {ui.document.title}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Inner Size:&lt;/strong&gt; {ui.htmlwindow.innerWidth} x {ui.htmlwindow.innerHeight}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Outer Size:&lt;/strong&gt; {ui.htmlwindow.outerWidth} x {ui.htmlwindow.outerHeight}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Position:&lt;/strong&gt; ({ui.htmlwindow.screenX}, {ui.htmlwindow.screenY})&lt;/p&gt;
+        &quot;&quot;&quot;
+        info_div.innerHTML = info_html
+
+def setup_window_events(ui):
+    &quot;&quot;&quot;Set up window event handlers&quot;&quot;&quot;
+    
+    def on_resize():
+        # Update window info when resized
+        display_window_info(ui)
+        ui.htmlwindow.console.log(&quot;Window resized&quot;)
+    
+    def on_focus():
+        ui.htmlwindow.console.log(&quot;Window gained focus&quot;)
+        # You could update UI to show active state
+    
+    def on_blur():
+        ui.htmlwindow.console.log(&quot;Window lost focus&quot;)
+        # You could update UI to show inactive state
+    
+    # Add event listeners
+    ui.htmlwindow.addEventListener(&quot;resize&quot;, on_resize)
+    ui.htmlwindow.addEventListener(&quot;focus&quot;, on_focus)
+    ui.htmlwindow.addEventListener(&quot;blur&quot;, on_blur)
+
+py_positron.openUI(
+    &quot;window_manager.html&quot;,
+    main=main,
+    title=&quot;Window Management Demo&quot;,
+    width=800,
+    height=600
+)
+</code></pre>
+<h3>Context and Execution Example</h3>
+<pre><code class="language-python">import py_positron
+
+def main(ui):
+    # Demonstrate context usage
+    demonstrate_context_features(ui)
+
+def demonstrate_context_features(ui):
+    &quot;&quot;&quot;Demonstrate PositronContext features&quot;&quot;&quot;
+    
+    # Access the context
+    context = ui.context
+    
+    # Set global variables that can be accessed in &lt;py&gt; tags
+    context.globals['app_name'] = 'PyPositron Demo'
+    context.globals['version'] = '1.0.0'
+    context.globals['user_data'] = {'name': 'User', 'role': 'Developer'}
+    
+    # Register a custom event handler
+    def custom_handler():
+        ui.htmlwindow.alert(&quot;Custom event triggered!&quot;)
+        ui.htmlwindow.console.log(&quot;Custom handler executed&quot;)
+    
+    # Store the handler in context
+    context.event_handlers['custom_event'] = custom_handler
+    
+    # Set up a button to trigger the custom event
+    trigger_btn = ui.document.getElementById(&quot;triggerBtn&quot;)
+    if trigger_btn:
+        trigger_btn.addEventListener(&quot;click&quot;, custom_handler)
+    
+    # Execute Python code dynamically
+    execute_btn = ui.document.getElementById(&quot;executeBtn&quot;)
+    if execute_btn:
+        def execute_dynamic_code():
+            code_input = ui.document.getElementById(&quot;codeInput&quot;)
+            if code_input and code_input.value.strip():
+                code = code_input.value
+                
+                try:
+                    # Execute the code in the PyPositron context
+                    success, error = context.execute(code)
+                    
+                    result_div = ui.document.getElementById(&quot;result&quot;)
+                    if success:
+                        result_div.innerText = &quot;Code executed successfully!&quot;
+                        result_div.style.color = &quot;green&quot;
+                        ui.htmlwindow.console.log(f&quot;Executed: {code}&quot;)
+                    else:
+                        result_div.innerText = f&quot;Error: {error}&quot;
+                        result_div.style.color = &quot;red&quot;
+                        ui.htmlwindow.console.error(f&quot;Execution error: {error}&quot;)
+                        
+                except Exception as e:
+                    ui.htmlwindow.alert(f&quot;Execution failed: {str(e)}&quot;)
+        
+        execute_btn.addEventListener(&quot;click&quot;, execute_dynamic_code)
+    
+    # Display context information
+    context_info = ui.document.getElementById(&quot;contextInfo&quot;)
+    if context_info:
+        info_html = f&quot;&quot;&quot;
+        &lt;h3&gt;Context Information&lt;/h3&gt;
+        &lt;p&gt;&lt;strong&gt;Global Variables:&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li&gt;app_name: {context.globals.get('app_name', 'Not set')}&lt;/li&gt;
+            &lt;li&gt;version: {context.globals.get('version', 'Not set')}&lt;/li&gt;
+            &lt;li&gt;user_data: {context.globals.get('user_data', 'Not set')}&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;&lt;strong&gt;Event Handlers:&lt;/strong&gt; {len(context.event_handlers)} registered&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Exposed Functions:&lt;/strong&gt; {len(context.exposed_functions)} available&lt;/p&gt;
+        &quot;&quot;&quot;
+        context_info.innerHTML = info_html
+
+py_positron.openUI(
+    &quot;context_demo.html&quot;,
+    main=main,
+    title=&quot;Context and Execution Demo&quot;,
+    width=900,
+    height=700
+)
+</code></pre>
+<h2>Properties Deep Dive</h2>
+<h3>window</h3>
+<p>The <code>window</code> property provides access to the underlying webview.Window object, which offers low-level window control:</p>
+<pre><code class="language-python">def main(ui):
+    # Window operations
+    ui.window.minimize()
+    ui.window.maximize() 
+    ui.window.restore()
+    ui.window.destroy()
+    
+    # Window properties (may vary by backend)
+    # ui.window.width
+    # ui.window.height
+    # ui.window.x
+    # ui.window.y
+</code></pre>
+<h3>context</h3>
+<p>The <code>context</code> property provides access to the execution environment:</p>
+<pre><code class="language-python">def main(ui):
+    # Access global and local variables
+    ui.context.globals['my_var'] = 'Hello World'
+    ui.context.locals['local_var'] = 42
+    
+    # Execute Python code
+    success, error = ui.context.execute(&quot;print('Hello from context!')&quot;)
+    
+    # Register event handlers
+    ui.context.event_handlers['my_event'] = my_handler_function
+</code></pre>
+<h3>document</h3>
+<p>The <code>document</code> property is your main interface for DOM manipulation:</p>
+<pre><code class="language-python">def main(ui):
+    # Element selection
+    element = ui.document.getElementById(&quot;myElement&quot;)
+    elements = ui.document.getElementsByClassName(&quot;myClass&quot;)
+    
+    # Element creation
+    new_element = ui.document.createElement(&quot;div&quot;)
+    
+    # Document properties
+    ui.document.title = &quot;New Title&quot;
+    body = ui.document.body
+</code></pre>
+<h3>exposed</h3>
+<p>The <code>exposed</code> property provides access to Python functions exposed to JavaScript:</p>
+<pre><code class="language-python">def my_function(x, y):
+    return x + y
+
+def main(ui):
+    # Call exposed functions
+    result = ui.exposed.my_function(5, 3)
+    print(result)  # 8
+
+py_positron.openUI(&quot;app.html&quot;, main=main, functions=[my_function])
+</code></pre>
+<h3>htmlwindow</h3>
+<p>The <code>htmlwindow</code> property provides browser window functionality:</p>
+<pre><code class="language-python">def main(ui):
+    # Dialogs
+    ui.htmlwindow.alert(&quot;Hello!&quot;)
+    result = ui.htmlwindow.confirm(&quot;Continue?&quot;)
+    name = ui.htmlwindow.prompt(&quot;Your name?&quot;)
+    
+    # Timers
+    timer_id = ui.htmlwindow.setTimeout(my_callback, 1000)
+    ui.htmlwindow.clearTimeout(timer_id)
+    
+    # Browser objects
+    console = ui.htmlwindow.console
+    navigator = ui.htmlwindow.navigator
+    location = ui.htmlwindow.location
+</code></pre>
+<h2>Best Practices</h2>
+<ol>
+<li>
+<p><strong>Cache references</strong>: Store frequently used objects in variables:</p>
+<pre><code class="language-python">def main(ui):
+    doc = ui.document
+    window = ui.htmlwindow
+    # Use doc and window instead of ui.document and ui.htmlwindow
+</code></pre>
+</li>
+<li>
+<p><strong>Error handling</strong>: Always handle potential errors when accessing UI components:</p>
+<pre><code class="language-python">def main(ui):
+    element = ui.document.getElementById(&quot;myElement&quot;)
+    if element:
+        element.innerText = &quot;Found!&quot;
+    else:
+        ui.htmlwindow.console.warn(&quot;Element not found&quot;)
+</code></pre>
+</li>
+<li>
+<p><strong>Clean separation</strong>: Keep different concerns separate:</p>
+<pre><code class="language-python">def main(ui):
+    setup_ui(ui)        # UI setup
+    setup_events(ui)    # Event handlers
+    load_data(ui)       # Data loading
+</code></pre>
+</li>
+<li>
+<p><strong>Use context wisely</strong>: Don't overuse the context for storing application state:</p>
+<pre><code class="language-python">def main(ui):
+    # Good: Store configuration
+    ui.context.globals['config'] = load_config()
+    
+    # Avoid: Storing complex application state
+    # Use proper Python variables instead
+</code></pre>
+</li>
+</ol>
+<h2>Related Documentation</h2>
+<ul>
+<li><strong><a href="Document">Document</a></strong>: DOM manipulation through <code>ui.document</code></li>
+<li><strong><a href="HTMLWindow">HTMLWindow</a></strong>: Browser functionality through <code>ui.htmlwindow</code></li>
+<li><strong><a href="Internal-Classes">Internal Classes</a></strong>: PositronContext and ExposedFunctions</li>
+<li><strong><a href="Global-Functions">Global Functions</a></strong>: The <code>openUI()</code> function that creates PositronWindowWrapper</li>
+</ul>
+
+                
+                <!-- 
+                ============================================
+                END OF CONVERTED DOCS INSERTION POINT
+                ============================================
+                -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Prism.js
+        Prism.manual = true;
+
+        // Copy button functionality for all code blocks
+        function addCopyButtons() {
+            const codeBlocks = document.querySelectorAll('pre[class*="language-"]');
+            
+            codeBlocks.forEach(pre => {
+                // Create container if it doesn't exist
+                if (!pre.parentElement.classList.contains('code-block-container')) {
+                    const container = document.createElement('div');
+                    container.className = 'code-block-container';
+                    pre.parentNode.insertBefore(container, pre);
+                    container.appendChild(pre);
+                }
+                
+                const container = pre.parentElement;
+                const codeElement = pre.querySelector('code');
+                
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = `
+                    <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                `;
+                
+                copyButton.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(codeElement.textContent);
+                        
+                        // Change to check icon
+                        copyButton.innerHTML = `
+                            <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        `;
+                        copyButton.classList.add('copied');
+                        
+                        // Revert back after 2 seconds
+                        setTimeout(() => {
+                            copyButton.innerHTML = `
+                                <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            `;
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
+                
+                container.appendChild(copyButton);
+            });
+        }
+
+        // Sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-hidden');
+            overlay.classList.toggle('active');
+        }
+
+        // Smooth scrolling for sidebar links (only for anchor links)
+function setupSmoothScrolling() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // Only handle anchor links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Get target section
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            } else {
+                // For regular links (to other pages), just close mobile sidebar if open
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+                // Let the browser handle the navigation normally
+            }
+        });
+    });
+}
+
+        // Highlight active section based on scroll position (only for anchor links)
+function setupScrollSpy() {
+    const sections = document.querySelectorAll('section[id], h1[id], h2[id], h3[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[href^="#"]'); // Only anchor links
+    
+    function updateActiveLink() {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            
+            if (window.scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink(); // Initial call
+}
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight syntax
+            Prism.highlightAll();
+            
+            // Add copy buttons after syntax highlighting
+            setTimeout(() => {
+                addCopyButtons();
+            }, 100);
+            
+            setupSmoothScrolling();
+            setupScrollSpy();
+        });
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (window.innerWidth < 768 && 
+                !sidebar.contains(e.target) && 
+                !e.target.closest('button[onclick="toggleSidebar()"]') &&
+                !sidebar.classList.contains('mobile-hidden')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

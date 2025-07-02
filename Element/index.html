@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPositron Docs - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Documentation Content Styles */
+        .docs-content {
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .docs-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .docs-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .docs-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .docs-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+            color: #374151;
+        }
+
+        .docs-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            color: #4b5563;
+        }
+
+        .docs-content p {
+            margin-bottom: 1rem;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .docs-content ul, .docs-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .docs-content ul {
+            list-style-type: disc;
+        }
+
+        .docs-content ol {
+            list-style-type: decimal;
+        }
+
+        .docs-content li {
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .docs-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .docs-content a:hover {
+            color: #1d4ed8;
+        }
+
+        .docs-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .docs-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .docs-content th, .docs-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .docs-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Inline code styling */
+        .docs-content code:not([class*="language-"]) {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            padding: 0.25rem 0.5rem !important;
+            border-radius: 0.375rem !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            font-weight: 500;
+        }
+
+        /* Code block container */
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        /* Override Prism.js styles */
+        .docs-content pre[class*="language-"] {
+            background: #1f2937 !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
+            margin: 1.5rem 0 !important;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .docs-content code[class*="language-"] {
+            background: transparent !important;
+            color: #f9fafb !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5;
+        }
+
+        /* Copy button for code blocks */
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            color: #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background: rgba(75, 85, 99, 0.8);
+            color: #f9fafb;
+        }
+
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        /* Sidebar styles */
+        .sidebar-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .sidebar-link.active {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 50;
+                background: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border: 1px solid #fed7aa;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header -->
+    <header class="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold">PyPositron Docs</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="text-sm font-medium hover:text-blue-600 transition-colors">Home</a>
+                <a href="/Home" class="text-sm font-medium text-blue-600">Docs</a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+         <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 h-screen sticky top-16 overflow-y-auto">
+            <div class="p-6">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Documentation</div>
+                    <nav class="space-y-1">
+                        <!--<a href="ORIGINALNAME.html" class="sidebar-link active">FORMATTEDNAME</a>-->
+                        <a href="/Browser-Objects" class="sidebar-link">Browser Objects</a>
+<a href="/CLI-Commands" class="sidebar-link">Cli Commands</a>
+<a href="/Document" class="sidebar-link">Document</a>
+<a href="/Element" class="sidebar-link">Element</a>
+<a href="/ElementList" class="sidebar-link">Elementlist</a>
+<a href="/Getting-Started" class="sidebar-link">Getting Started</a>
+<a href="/Global-Functions" class="sidebar-link">Global Functions</a>
+<a href="/Home" class="sidebar-link">Home</a>
+<a href="/HTMLWindow" class="sidebar-link">Htmlwindow</a>
+<a href="/Installation" class="sidebar-link">Installation</a>
+<a href="/Internal-Classes" class="sidebar-link">Internal Classes</a>
+<a href="/Library-Reference" class="sidebar-link">Library Reference</a>
+<a href="/PositronWindowWrapper" class="sidebar-link">Positronwindowwrapper</a>
+<a href="/Python-HTML-Integration" class="sidebar-link">Python Html Integration</a>
+<a href="/Quick-Start" class="sidebar-link">Quick Start</a>
+<a href="/Style" class="sidebar-link">Style</a>
+<a href="/Troubleshooting" class="sidebar-link">Troubleshooting</a>
+<a href="/Virtual-Environments" class="sidebar-link">Virtual Environments</a>
+                    </nav>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-8 max-w-4xl">
+            <div class="docs-content">
+                <!-- 
+                ============================================
+                INSERT CONVERTED UNSTYLED DOCS HTML HERE
+                ============================================
+                
+                This is where you should place the automatically converted
+                HTML content from your documentation source (Markdown, etc.).
+                All styling is handled by CSS classes above, so no inline
+                styles are needed.
+                
+                Example of what the converted HTML should look like:
+                -->
+                
+                <h1>Element Class</h1>
+<p>The Element class represents a single DOM element in the HTML document. Elements are returned by document query methods like <code>getElementById()</code>, <code>querySelector()</code>, and created by <code>createElement()</code>. This class provides comprehensive access to all element properties and methods available in the DOM.</p>
+<h2>Overview</h2>
+<p>The Element class is the foundation of DOM manipulation in PyPositron. Every HTML element becomes an Element object that you can:</p>
+<ul>
+<li>Read and modify properties (text, attributes, styling)</li>
+<li>Handle events (clicks, form input, etc.)</li>
+<li>Navigate the DOM tree (parents, children, siblings)</li>
+<li>Manipulate the element's position and appearance</li>
+</ul>
+<h2>Properties</h2>
+<h3>Basic Element Information</h3>
+<ul>
+<li><code>id -&gt; str</code>: Sets or returns the value of the id attribute of an element. <a href="https://www.w3schools.com/jsref/prop_html_id.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/id">MDN Reference</a></li>
+<li><code>tagName -&gt; str</code>: Returns the tag name of an element (e.g., &quot;DIV&quot;, &quot;P&quot;, &quot;BUTTON&quot;). <a href="https://www.w3schools.com/jsref/prop_element_tagname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName">MDN Reference</a></li>
+<li><code>className -&gt; str</code>: Sets or returns the value of the class attribute of an element. <a href="https://www.w3schools.com/jsref/prop_html_classname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/className">MDN Reference</a></li>
+<li><code>classList</code>: Returns the class name(s) of an element as a DOMTokenList. <a href="https://www.w3schools.com/jsref/prop_element_classlist.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList">MDN Reference</a></li>
+<li><code>attributes</code>: Returns a NamedNodeMap of an element's attributes. <a href="https://www.w3schools.com/jsref/prop_node_attributes.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes">MDN Reference</a></li>
+</ul>
+<h3>Content Properties</h3>
+<ul>
+<li><code>innerText -&gt; str</code>: Gets or sets the inner text of the element (text content only, no HTML). <a href="https://www.w3schools.com/jsref/prop_node_innertext.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText">MDN Reference</a></li>
+<li><code>innerHTML -&gt; str</code>: Gets or sets the inner HTML of the element. <strong>Warning:</strong> This can lead to XSS vulnerabilities if not sanitized properly. <a href="https://www.w3schools.com/jsref/prop_html_innerhtml.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">MDN Reference</a></li>
+<li><code>textContent -&gt; str</code>: Sets or returns the textual content of a node and its descendants (similar to innerText but with some differences). <a href="https://www.w3schools.com/jsref/prop_node_textcontent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent">MDN Reference</a></li>
+<li><code>outerHTML -&gt; str</code>: Sets or returns the content of an element (including the start tag and the end tag). <a href="https://www.w3schools.com/jsref/prop_html_outerhtml.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML">MDN Reference</a></li>
+<li><code>outerText -&gt; str</code>: Sets or returns the outer text content of a node and its descendants. <a href="https://www.w3schools.com/jsref/prop_html_outertext.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/outerText">MDN Reference</a></li>
+<li><code>value</code>: Gets or sets the value of a form element (input, textarea, select, etc.). <a href="https://www.w3schools.com/jsref/prop_text_value.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/value">MDN Reference</a></li>
+</ul>
+<h3>Accessibility and User Interaction</h3>
+<ul>
+<li><code>accessKey -&gt; str</code>: Sets or returns the accesskey attribute of an element. <a href="https://www.w3schools.com/jsref/prop_html_accesskey.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/accessKey">MDN Reference</a></li>
+<li><code>contentEditable -&gt; str</code>: Sets or returns whether the content of an element is editable or not. <a href="https://www.w3schools.com/jsref/prop_html_contenteditable.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/contentEditable">MDN Reference</a></li>
+<li><code>isContentEditable -&gt; bool</code>: Returns true if an element's content is editable. <a href="https://www.w3schools.com/jsref/prop_html_iscontenteditable.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/isContentEditable">MDN Reference</a></li>
+<li><code>tabIndex -&gt; int</code>: Sets or returns the value of the tabindex attribute of an element. <a href="https://www.w3schools.com/jsref/prop_html_tabindex.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/tabIndex">MDN Reference</a></li>
+<li><code>title -&gt; str</code>: Sets or returns the value of the title attribute of an element (tooltip text). <a href="https://www.w3schools.com/jsref/prop_html_title.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/title">MDN Reference</a></li>
+<li><code>dir -&gt; str</code>: Sets or returns the value of the dir attribute of an element (text direction). <a href="https://www.w3schools.com/jsref/prop_html_dir.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dir">MDN Reference</a></li>
+<li><code>lang -&gt; str</code>: Sets or returns the value of the lang attribute of an element. <a href="https://www.w3schools.com/jsref/prop_html_lang.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/lang">MDN Reference</a></li>
+</ul>
+<h3>Dimensions and Position</h3>
+<ul>
+<li><code>clientHeight -&gt; int</code>: Returns the height of an element, including padding but excluding border, scrollbar, and margin. <a href="https://www.w3schools.com/jsref/prop_element_clientheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight">MDN Reference</a></li>
+<li><code>clientWidth -&gt; int</code>: Returns the width of an element, including padding but excluding border, scrollbar, and margin. <a href="https://www.w3schools.com/jsref/prop_element_clientwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientWidth">MDN Reference</a></li>
+<li><code>clientLeft -&gt; int</code>: Returns the width of the left border of an element. <a href="https://www.w3schools.com/jsref/prop_element_clientleft.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientLeft">MDN Reference</a></li>
+<li><code>clientTop -&gt; int</code>: Returns the width of the top border of an element. <a href="https://www.w3schools.com/jsref/prop_element_clienttop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/clientTop">MDN Reference</a></li>
+<li><code>offsetHeight -&gt; int</code>: Returns the height of an element, including padding, border and scrollbar. <a href="https://www.w3schools.com/jsref/prop_element_offsetheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight">MDN Reference</a></li>
+<li><code>offsetWidth -&gt; int</code>: Returns the width of an element, including padding, border and scrollbar. <a href="https://www.w3schools.com/jsref/prop_element_offsetwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth">MDN Reference</a></li>
+<li><code>offsetLeft -&gt; int</code>: Returns the horizontal offset position of an element relative to its offset parent. <a href="https://www.w3schools.com/jsref/prop_element_offsetleft.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft">MDN Reference</a></li>
+<li><code>offsetTop -&gt; int</code>: Returns the vertical offset position of an element relative to its offset parent. <a href="https://www.w3schools.com/jsref/prop_element_offsettop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop">MDN Reference</a></li>
+<li><code>offsetParent</code>: Returns the offset container of an element. <a href="https://www.w3schools.com/jsref/prop_element_offsetparent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent">MDN Reference</a></li>
+</ul>
+<h3>Scroll Properties</h3>
+<ul>
+<li><code>scrollHeight -&gt; int</code>: Returns the entire height of an element, including padding. <a href="https://www.w3schools.com/jsref/prop_element_scrollheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight">MDN Reference</a></li>
+<li><code>scrollWidth -&gt; int</code>: Returns the entire width of an element, including padding. <a href="https://www.w3schools.com/jsref/prop_element_scrollwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollWidth">MDN Reference</a></li>
+<li><code>scrollLeft -&gt; int</code>: Sets or returns the number of pixels an element's content is scrolled horizontally. <a href="https://www.w3schools.com/jsref/prop_element_scrollleft.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft">MDN Reference</a></li>
+<li><code>scrollTop -&gt; int</code>: Sets or returns the number of pixels an element's content is scrolled vertically. <a href="https://www.w3schools.com/jsref/prop_element_scrolltop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop">MDN Reference</a></li>
+</ul>
+<h3>DOM Tree Navigation</h3>
+<ul>
+<li><code>parentNode</code>: Returns the parent node of an element. <a href="https://www.w3schools.com/jsref/prop_node_parentnode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode">MDN Reference</a></li>
+<li><code>parentElement</code>: Returns the parent element node of an element. <a href="https://www.w3schools.com/jsref/prop_node_parentelement.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement">MDN Reference</a></li>
+<li><code>childNodes</code>: Returns a NodeList of an element's child nodes (includes text nodes). <a href="https://www.w3schools.com/jsref/prop_node_childnodes.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes">MDN Reference</a></li>
+<li><code>children</code>: Returns an HTMLCollection of an element's child elements (elements only, no text nodes). <a href="https://www.w3schools.com/jsref/prop_element_children.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/children">MDN Reference</a></li>
+<li><code>childElementCount -&gt; int</code>: Returns an element's number of child elements. <a href="https://www.w3schools.com/jsref/prop_element_childelementcount.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/childElementCount">MDN Reference</a></li>
+<li><code>firstChild</code>: Returns the first child node of an element. <a href="https://www.w3schools.com/jsref/prop_node_firstchild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/firstChild">MDN Reference</a></li>
+<li><code>firstElementChild</code>: Returns the first child element of an element. <a href="https://www.w3schools.com/jsref/prop_element_firstelementchild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/firstElementChild">MDN Reference</a></li>
+<li><code>lastChild</code>: Returns the last child node of an element. <a href="https://www.w3schools.com/jsref/prop_node_lastchild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/lastChild">MDN Reference</a></li>
+<li><code>lastElementChild</code>: Returns the last child element of an element. <a href="https://www.w3schools.com/jsref/prop_element_lastelementchild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/lastElementChild">MDN Reference</a></li>
+<li><code>nextSibling</code>: Returns the next node at the same node tree level. <a href="https://www.w3schools.com/jsref/prop_node_nextsibling.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nextSibling">MDN Reference</a></li>
+<li><code>nextElementSibling</code>: Returns the next element at the same node tree level. <a href="https://www.w3schools.com/jsref/prop_element_nextelementsibling.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/nextElementSibling">MDN Reference</a></li>
+<li><code>previousSibling</code>: Returns the previous node at the same node tree level. <a href="https://www.w3schools.com/jsref/prop_node_previoussibling.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/previousSibling">MDN Reference</a></li>
+<li><code>previousElementSibling</code>: Returns the previous element at the same node tree level. <a href="https://www.w3schools.com/jsref/prop_element_previouselementsibling.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/previousElementSibling">MDN Reference</a></li>
+</ul>
+<h3>Node Information</h3>
+<ul>
+<li><code>nodeName -&gt; str</code>: Returns the name of a node (usually the tag name for elements). <a href="https://www.w3schools.com/jsref/prop_node_nodename.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeName">MDN Reference</a></li>
+<li><code>nodeType -&gt; int</code>: Returns the node type of a node (1 for elements). <a href="https://www.w3schools.com/jsref/prop_node_nodetype.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType">MDN Reference</a></li>
+<li><code>nodeValue -&gt; str</code>: Sets or returns the value of a node (null for elements). <a href="https://www.w3schools.com/jsref/prop_node_nodevalue.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeValue">MDN Reference</a></li>
+<li><code>ownerDocument</code>: Returns the root element (document object) for an element. <a href="https://www.w3schools.com/jsref/prop_node_ownerdocument.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/ownerDocument">MDN Reference</a></li>
+<li><code>namespaceURI -&gt; str</code>: Returns the namespace URI of an element. <a href="https://www.w3schools.com/jsref/prop_node_namespaceuri.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/namespaceURI">MDN Reference</a></li>
+</ul>
+<h3>Styling</h3>
+<ul>
+<li><code>style -&gt; Style</code>: Gets the style object of the element for CSS manipulation. <a href="https://www.w3schools.com/jsref/prop_html_style.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style">MDN Reference</a></li>
+</ul>
+<h2>Methods</h2>
+<h3>Event Handling</h3>
+<ul>
+<li><code>addEventListener(event_type: str, callback: Callable) -&gt; bool</code>: Adds an event listener to the element. Returns True if successful. <a href="https://www.w3schools.com/jsref/met_element_addeventlistener.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">MDN Reference</a></li>
+<li><code>removeEventListener(event_type: str, callback=None)</code>: Removes an event handler that has been attached with the addEventListener() method. <a href="https://www.w3schools.com/jsref/met_element_removeeventlistener.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener">MDN Reference</a></li>
+</ul>
+<h3>Focus and Interaction</h3>
+<ul>
+<li><code>focus()</code>: Gives focus to an element. <a href="https://www.w3schools.com/jsref/met_html_focus.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus">MDN Reference</a></li>
+<li><code>blur()</code>: Removes focus from an element. <a href="https://www.w3schools.com/jsref/met_html_blur.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/blur">MDN Reference</a></li>
+<li><code>click()</code>: Simulates a mouse-click on an element. <a href="https://www.w3schools.com/jsref/met_html_click.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click">MDN Reference</a></li>
+</ul>
+<h3>Attribute Manipulation</h3>
+<ul>
+<li><code>getAttribute(name: str) -&gt; str</code>: Returns the value of an element's attribute. <a href="https://www.w3schools.com/jsref/met_element_getattribute.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute">MDN Reference</a></li>
+<li><code>setAttribute(attr_name: str, value: str)</code>: Sets an attribute on the element. <a href="https://www.w3schools.com/jsref/met_element_setattribute.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute">MDN Reference</a></li>
+<li><code>removeAttribute(name: str)</code>: Removes an attribute from an element. <a href="https://www.w3schools.com/jsref/met_element_removeattribute.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttribute">MDN Reference</a></li>
+<li><code>hasAttribute(name: str) -&gt; bool</code>: Returns true if an element has a given attribute. <a href="https://www.w3schools.com/jsref/met_element_hasattribute.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute">MDN Reference</a></li>
+<li><code>hasAttributes() -&gt; bool</code>: Returns true if an element has any attributes. <a href="https://www.w3schools.com/jsref/met_node_hasattributes.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttributes">MDN Reference</a></li>
+<li><code>getAttributeNode(name: str)</code>: Returns an attribute node. <a href="https://www.w3schools.com/jsref/met_element_getattributenode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttributeNode">MDN Reference</a></li>
+<li><code>setAttributeNode(attr_node)</code>: Sets or changes an attribute node. <a href="https://www.w3schools.com/jsref/met_element_setattributenode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttributeNode">MDN Reference</a></li>
+<li><code>removeAttributeNode(attr_node)</code>: Removes an attribute node, and returns the removed node. <a href="https://www.w3schools.com/jsref/met_element_removeattributenode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttributeNode">MDN Reference</a></li>
+</ul>
+<h3>DOM Tree Manipulation</h3>
+<ul>
+<li><code>appendChild(child: Element)</code>: Appends a child element. Raises TypeError if child is not an Element. <a href="https://www.w3schools.com/jsref/met_node_appendchild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild">MDN Reference</a></li>
+<li><code>removeChild(child: Element)</code>: Removes a child element. Raises TypeError if child is not an Element. <a href="https://www.w3schools.com/jsref/met_node_removechild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild">MDN Reference</a></li>
+<li><code>replaceChild(new_child: Element, old_child: Element)</code>: Replaces a child element. Raises TypeError if arguments are not Elements. <a href="https://www.w3schools.com/jsref/met_node_replacechild.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild">MDN Reference</a></li>
+<li><code>insertBefore(new_node: Element, reference_node: Element) -&gt; Element</code>: Inserts a new child node before an existing child node. <a href="https://www.w3schools.com/jsref/met_node_insertbefore.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore">MDN Reference</a></li>
+<li><code>cloneNode(deep: bool = False) -&gt; Element</code>: Clones an element. If deep is True, clones all descendants. <a href="https://www.w3schools.com/jsref/met_node_clonenode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode">MDN Reference</a></li>
+<li><code>remove()</code>: Removes an element from the DOM. <a href="https://www.w3schools.com/jsref/met_element_remove.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/remove">MDN Reference</a></li>
+</ul>
+<h3>Modern DOM Manipulation</h3>
+<ul>
+<li><code>append(*nodes)</code>: Adds (appends) one or several nodes (element) or strings after the last child of an element. <a href="https://www.w3schools.com/jsref/met_element_append.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/append">MDN Reference</a></li>
+<li><code>after(*nodes)</code>: Inserts one or more nodes (elements) or strings after an element. <a href="https://www.w3schools.com/jsref/met_element_after.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/after">MDN Reference</a></li>
+<li><code>before(*nodes)</code>: Inserts one or more nodes (elements) or strings before an element. <a href="https://www.w3schools.com/jsref/met_element_before.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/before">MDN Reference</a></li>
+<li><code>insertAdjacentElement(position: str, element: Element) -&gt; Element</code>: Inserts a new HTML element at a position relative to an element. Position values: &quot;beforebegin&quot;, &quot;afterbegin&quot;, &quot;beforeend&quot;, &quot;afterend&quot;. <a href="https://www.w3schools.com/jsref/met_node_insertadjacentelement.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement">MDN Reference</a></li>
+<li><code>insertAdjacentHTML(position: str, html: str)</code>: Inserts an HTML formatted text at a position relative to an element. Position values: &quot;beforebegin&quot;, &quot;afterbegin&quot;, &quot;beforeend&quot;, &quot;afterend&quot;. <a href="https://www.w3schools.com/jsref/met_node_insertadjacenthtml.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML">MDN Reference</a></li>
+<li><code>insertAdjacentText(position: str, text: str)</code>: Inserts text into a position relative to an element. Position values: &quot;beforebegin&quot;, &quot;afterbegin&quot;, &quot;beforeend&quot;, &quot;afterend&quot;. <a href="https://www.w3schools.com/jsref/met_node_insertadjacenttext.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentText">MDN Reference</a></li>
+</ul>
+<h3>Element Query Methods</h3>
+<ul>
+<li><code>querySelector(selector: str) -&gt; Element</code>: Returns the first child element that matches a CSS selector(s). <a href="https://www.w3schools.com/jsref/met_element_queryselector.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector">MDN Reference</a></li>
+<li><code>querySelectorAll(selector: str) -&gt; ElementList</code>: Returns all child elements that matches a CSS selector(s). <a href="https://www.w3schools.com/jsref/met_element_queryselectorall.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll">MDN Reference</a></li>
+<li><code>getElementsByClassName(class_name: str) -&gt; ElementList</code>: Returns a collection of child elements with a given class name. <a href="https://www.w3schools.com/jsref/met_element_getelementsbyclassname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByClassName">MDN Reference</a></li>
+<li><code>getElementsByTagName(tag_name: str) -&gt; ElementList</code>: Returns a collection of child elements with a given tag name. <a href="https://www.w3schools.com/jsref/met_element_getelementsbytagname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName">MDN Reference</a></li>
+<li><code>closest(selector: str) -&gt; Element</code>: Searches the DOM tree for the closest element that matches a CSS selector. <a href="https://www.w3schools.com/jsref/met_element_closest.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/closest">MDN Reference</a></li>
+<li><code>matches(selector: str) -&gt; bool</code>: Returns true if an element is matched by a given CSS selector. <a href="https://www.w3schools.com/jsref/met_element_matches.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/matches">MDN Reference</a></li>
+</ul>
+<h3>Element Information</h3>
+<ul>
+<li><code>getBoundingClientRect()</code>: Returns the size of an element and its position relative to the viewport. <a href="https://www.w3schools.com/jsref/met_element_getboundingclientrect.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">MDN Reference</a></li>
+<li><code>scrollIntoView(align_to_top: bool = True)</code>: Scrolls the element into the visible area of the browser window. <a href="https://www.w3schools.com/jsref/met_element_scrollintoview.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView">MDN Reference</a></li>
+</ul>
+<h3>Element Comparison and Testing</h3>
+<ul>
+<li><code>contains(other: Element) -&gt; bool</code>: Returns true if a node is a descendant of a node. <a href="https://www.w3schools.com/jsref/met_node_contains.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/contains">MDN Reference</a></li>
+<li><code>hasChildNodes() -&gt; bool</code>: Returns true if an element has any child nodes. <a href="https://www.w3schools.com/jsref/met_node_haschildnodes.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/hasChildNodes">MDN Reference</a></li>
+<li><code>compareDocumentPosition(other: Element) -&gt; int</code>: Compares the document position of two elements. <a href="https://www.w3schools.com/jsref/met_node_comparedocumentposition.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition">MDN Reference</a></li>
+<li><code>isEqualNode(other: Element) -&gt; bool</code>: Checks if two elements are equal. <a href="https://www.w3schools.com/jsref/met_node_isequalnode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode">MDN Reference</a></li>
+<li><code>isSameNode(other: Element) -&gt; bool</code>: Checks if two elements are the same node. <a href="https://www.w3schools.com/jsref/met_node_issamenode.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/isSameNode">MDN Reference</a></li>
+</ul>
+<h3>Utility Methods</h3>
+<ul>
+<li><code>normalize()</code>: Joins adjacent text nodes and removes empty text nodes in an element. <a href="https://www.w3schools.com/jsref/met_node_normalize.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/normalize">MDN Reference</a></li>
+<li><code>toString() -&gt; str</code>: Converts an element to a string. <a href="https://www.w3schools.com/jsref/jsref_tostring_string.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/toString">MDN Reference</a></li>
+<li><code>isDefaultNamespace(namespace_uri: str) -&gt; bool</code>: Returns true if a given namespaceURI is the default. <a href="https://www.w3schools.com/jsref/met_node_isdefaultnamespace.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/isDefaultNamespace">MDN Reference</a></li>
+</ul>
+<h2>Common Event Types for addEventListener</h2>
+<h3>Mouse Events</h3>
+<p>(<a href="https://www.w3schools.com/jsref/dom_obj_event.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/Events#mouse_events">MDN Reference</a>)</p>
+<ul>
+<li><code>&quot;click&quot;</code>: Triggered when an element is clicked</li>
+<li><code>&quot;dblclick&quot;</code>: Triggered when an element is double-clicked</li>
+<li><code>&quot;mousedown&quot;</code>: Triggered when a mouse button is pressed down</li>
+<li><code>&quot;mouseup&quot;</code>: Triggered when a mouse button is released</li>
+<li><code>&quot;mouseover&quot;</code>: Triggered when the mouse pointer moves over an element</li>
+<li><code>&quot;mouseout&quot;</code>: Triggered when the mouse pointer leaves an element</li>
+<li><code>&quot;mouseenter&quot;</code>: Triggered when the mouse pointer enters an element</li>
+<li><code>&quot;mouseleave&quot;</code>: Triggered when the mouse pointer leaves an element</li>
+<li><code>&quot;mousemove&quot;</code>: Triggered when the mouse pointer moves within an element</li>
+</ul>
+<h3>Keyboard Events</h3>
+<p>(<a href="https://www.w3schools.com/jsref/obj_keyboardevent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/Events#keyboard_events">MDN Reference</a>)</p>
+<ul>
+<li><code>&quot;keydown&quot;</code>: Triggered when a key is pressed down</li>
+<li><code>&quot;keyup&quot;</code>: Triggered when a key is released</li>
+<li><code>&quot;keypress&quot;</code>: Triggered when a key is pressed (deprecated, use keydown/keyup instead)</li>
+</ul>
+<h3>Form Events</h3>
+<p>(<a href="https://www.w3schools.com/jsref/dom_obj_event.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/Events#form_events">MDN Reference</a>)</p>
+<ul>
+<li><code>&quot;change&quot;</code>: Triggered when the value of a form element changes</li>
+<li><code>&quot;input&quot;</code>: Triggered when the value of an input element changes</li>
+<li><code>&quot;submit&quot;</code>: Triggered when a form is submitted</li>
+<li><code>&quot;reset&quot;</code>: Triggered when a form is reset</li>
+<li><code>&quot;focus&quot;</code>: Triggered when an element gains focus</li>
+<li><code>&quot;blur&quot;</code>: Triggered when an element loses focus</li>
+<li><code>&quot;focusin&quot;</code>: Triggered when an element is about to receive focus</li>
+<li><code>&quot;focusout&quot;</code>: Triggered when an element is about to lose focus</li>
+</ul>
+<h3>Touch Events (for mobile devices)</h3>
+<p>(<a href="https://www.w3schools.com/jsref/obj_touchevent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/Events#touch_events">MDN Reference</a>)</p>
+<ul>
+<li><code>&quot;touchstart&quot;</code>: Triggered when a touch point is placed on the touch surface</li>
+<li><code>&quot;touchend&quot;</code>: Triggered when a touch point is removed from the touch surface</li>
+<li><code>&quot;touchmove&quot;</code>: Triggered when a touch point is moved along the touch surface</li>
+<li><code>&quot;touchcancel&quot;</code>: Triggered when a touch point has been disrupted</li>
+</ul>
+<h3>Drag and Drop Events</h3>
+<p>(<a href="https://www.w3schools.com/html/html5_draganddrop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/Events#drag_drop_events">MDN Reference</a>)</p>
+<ul>
+<li><code>&quot;drag&quot;</code>: Triggered when an element is being dragged</li>
+<li><code>&quot;dragstart&quot;</code>: Triggered when drag operation starts</li>
+<li><code>&quot;dragend&quot;</code>: Triggered when drag operation ends</li>
+<li><code>&quot;dragover&quot;</code>: Triggered when dragged element is over a drop target</li>
+<li><code>&quot;dragenter&quot;</code>: Triggered when dragged element enters a drop target</li>
+<li><code>&quot;dragleave&quot;</code>: Triggered when dragged element leaves a drop target</li>
+<li><code>&quot;drop&quot;</code>: Triggered when dragged element is dropped</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Basic Element Manipulation</h3>
+<pre><code class="language-python">def main(ui):
+    # Get an element
+    button = ui.document.getElementById(&quot;myButton&quot;)
+    
+    # Modify content
+    button.innerText = &quot;Click Me!&quot;
+    button.setAttribute(&quot;disabled&quot;, &quot;false&quot;)
+    
+    # Styling
+    button.style.backgroundColor = &quot;blue&quot;
+    button.style.color = &quot;white&quot;
+    button.style.padding = &quot;10px 20px&quot;
+    
+    # Add event handler
+    def handle_click():
+        button.innerText = &quot;Clicked!&quot;
+        button.style.backgroundColor = &quot;green&quot;
+    
+    button.addEventListener(&quot;click&quot;, handle_click)
+</code></pre>
+<h3>Form Handling</h3>
+<pre><code class="language-python">def main(ui):
+    # Get form elements
+    name_input = ui.document.getElementById(&quot;nameInput&quot;)
+    email_input = ui.document.getElementById(&quot;emailInput&quot;)
+    submit_btn = ui.document.getElementById(&quot;submitBtn&quot;)
+    
+    def validate_form():
+        name = name_input.value.strip()
+        email = email_input.value.strip()
+        
+        # Enable/disable submit button based on validation
+        if name and &quot;@&quot; in email:
+            submit_btn.removeAttribute(&quot;disabled&quot;)
+            submit_btn.style.opacity = &quot;1&quot;
+        else:
+            submit_btn.setAttribute(&quot;disabled&quot;, &quot;true&quot;)
+            submit_btn.style.opacity = &quot;0.5&quot;
+    
+    # Add input event listeners for real-time validation
+    name_input.addEventListener(&quot;input&quot;, validate_form)
+    email_input.addEventListener(&quot;input&quot;, validate_form)
+    
+    # Initial validation
+    validate_form()
+</code></pre>
+<h3>Dynamic Content Creation</h3>
+<pre><code class="language-python">def main(ui):
+    container = ui.document.getElementById(&quot;container&quot;)
+    
+    def add_item(text):
+        # Create new elements
+        item = ui.document.createElement(&quot;div&quot;)
+        item.className = &quot;list-item&quot;
+        item.innerText = text
+        
+        # Add remove button
+        remove_btn = ui.document.createElement(&quot;button&quot;)
+        remove_btn.innerText = &quot;Remove&quot;
+        remove_btn.style.marginLeft = &quot;10px&quot;
+        
+        def remove_item():
+            item.remove()
+        
+        remove_btn.addEventListener(&quot;click&quot;, remove_item)
+        
+        # Assemble and add to container
+        item.appendChild(remove_btn)
+        container.appendChild(item)
+    
+    # Add some initial items
+    add_item(&quot;First item&quot;)
+    add_item(&quot;Second item&quot;)
+    add_item(&quot;Third item&quot;)
+</code></pre>
+<h3>DOM Tree Navigation</h3>
+<pre><code class="language-python">def main(ui):
+    def highlight_siblings(element):
+        # Get parent and iterate through siblings
+        parent = element.parentElement
+        if parent:
+            children = parent.children
+            for i in range(len(children)):
+                child = children[i]
+                if child != element:
+                    child.style.backgroundColor = &quot;yellow&quot;
+                else:
+                    child.style.backgroundColor = &quot;lightblue&quot;
+    
+    # Add click handlers to all buttons
+    buttons = ui.document.getElementsByTagName(&quot;button&quot;)
+    for button in buttons:
+        button.addEventListener(&quot;click&quot;, lambda: highlight_siblings(button))
+</code></pre>
+<h3>Advanced Event Handling</h3>
+<pre><code class="language-python">def main(ui):
+    # Multi-event handling
+    input_field = ui.document.getElementById(&quot;searchInput&quot;)
+    search_results = ui.document.getElementById(&quot;searchResults&quot;)
+    
+    def handle_focus():
+        input_field.style.borderColor = &quot;blue&quot;
+        input_field.style.boxShadow = &quot;0 0 5px rgba(0,0,255,0.3)&quot;
+    
+    def handle_blur():
+        input_field.style.borderColor = &quot;&quot;
+        input_field.style.boxShadow = &quot;&quot;
+    
+    def handle_input():
+        query = input_field.value
+        if len(query) &gt; 2:
+            # Simulate search results
+            search_results.innerHTML = f&quot;&lt;p&gt;Searching for: {query}&lt;/p&gt;&quot;
+        else:
+            search_results.innerHTML = &quot;&quot;
+    
+    def handle_keydown(event):
+        # You can access event information if needed
+        if input_field.value == &quot;&quot; and len(input_field.value) == 0:
+            search_results.innerHTML = &quot;&lt;p&gt;Start typing to search...&lt;/p&gt;&quot;
+    
+    # Add multiple event listeners
+    input_field.addEventListener(&quot;focus&quot;, handle_focus)
+    input_field.addEventListener(&quot;blur&quot;, handle_blur)
+    input_field.addEventListener(&quot;input&quot;, handle_input)
+    input_field.addEventListener(&quot;keydown&quot;, handle_keydown)
+</code></pre>
+<h2>Best Practices</h2>
+<ol>
+<li>
+<p><strong>Cache element references</strong>: Store frequently accessed elements in variables rather than selecting them repeatedly.</p>
+</li>
+<li>
+<p><strong>Use specific selectors</strong>: When possible, use <code>getElementById()</code> as it's the fastest selection method.</p>
+</li>
+<li>
+<p><strong>Check element existence</strong>: Always verify that elements exist before manipulating them.</p>
+</li>
+<li>
+<p><strong>Use appropriate content properties</strong>:</p>
+<ul>
+<li>Use <code>innerText</code> for plain text content</li>
+<li>Use <code>innerHTML</code> only when you need to insert HTML (and ensure it's safe)</li>
+<li>Use <code>textContent</code> for cross-browser compatibility</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle events efficiently</strong>: Remove event listeners when they're no longer needed to prevent memory leaks.</p>
+</li>
+<li>
+<p><strong>Use modern DOM methods</strong>: Prefer <code>append()</code>, <code>before()</code>, <code>after()</code> over older methods when possible.</p>
+</li>
+<li>
+<p><strong>Validate form inputs</strong>: Always validate user input both in real-time and before submission.</p>
+</li>
+</ol>
+<h2>Related Classes</h2>
+<ul>
+<li><strong><a href="Document">Document</a></strong>: The document object that contains elements</li>
+<li><strong><a href="ElementList">ElementList</a></strong>: Collections of elements returned by query methods</li>
+<li><strong><a href="Style">Style</a></strong>: CSS styling interface for elements</li>
+<li><strong><a href="HTMLWindow">HTMLWindow</a></strong>: Browser window functionality</li>
+</ul>
+
+                
+                <!-- 
+                ============================================
+                END OF CONVERTED DOCS INSERTION POINT
+                ============================================
+                -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Prism.js
+        Prism.manual = true;
+
+        // Copy button functionality for all code blocks
+        function addCopyButtons() {
+            const codeBlocks = document.querySelectorAll('pre[class*="language-"]');
+            
+            codeBlocks.forEach(pre => {
+                // Create container if it doesn't exist
+                if (!pre.parentElement.classList.contains('code-block-container')) {
+                    const container = document.createElement('div');
+                    container.className = 'code-block-container';
+                    pre.parentNode.insertBefore(container, pre);
+                    container.appendChild(pre);
+                }
+                
+                const container = pre.parentElement;
+                const codeElement = pre.querySelector('code');
+                
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = `
+                    <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                `;
+                
+                copyButton.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(codeElement.textContent);
+                        
+                        // Change to check icon
+                        copyButton.innerHTML = `
+                            <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        `;
+                        copyButton.classList.add('copied');
+                        
+                        // Revert back after 2 seconds
+                        setTimeout(() => {
+                            copyButton.innerHTML = `
+                                <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            `;
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
+                
+                container.appendChild(copyButton);
+            });
+        }
+
+        // Sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-hidden');
+            overlay.classList.toggle('active');
+        }
+
+        // Smooth scrolling for sidebar links (only for anchor links)
+function setupSmoothScrolling() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // Only handle anchor links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Get target section
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            } else {
+                // For regular links (to other pages), just close mobile sidebar if open
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+                // Let the browser handle the navigation normally
+            }
+        });
+    });
+}
+
+        // Highlight active section based on scroll position (only for anchor links)
+function setupScrollSpy() {
+    const sections = document.querySelectorAll('section[id], h1[id], h2[id], h3[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[href^="#"]'); // Only anchor links
+    
+    function updateActiveLink() {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            
+            if (window.scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink(); // Initial call
+}
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight syntax
+            Prism.highlightAll();
+            
+            // Add copy buttons after syntax highlighting
+            setTimeout(() => {
+                addCopyButtons();
+            }, 100);
+            
+            setupSmoothScrolling();
+            setupScrollSpy();
+        });
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (window.innerWidth < 768 && 
+                !sidebar.contains(e.target) && 
+                !e.target.closest('button[onclick="toggleSidebar()"]') &&
+                !sidebar.classList.contains('mobile-hidden')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPositron Docs - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Documentation Content Styles */
+        .docs-content {
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .docs-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .docs-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .docs-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .docs-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+            color: #374151;
+        }
+
+        .docs-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            color: #4b5563;
+        }
+
+        .docs-content p {
+            margin-bottom: 1rem;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .docs-content ul, .docs-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .docs-content ul {
+            list-style-type: disc;
+        }
+
+        .docs-content ol {
+            list-style-type: decimal;
+        }
+
+        .docs-content li {
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .docs-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .docs-content a:hover {
+            color: #1d4ed8;
+        }
+
+        .docs-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .docs-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .docs-content th, .docs-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .docs-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Inline code styling */
+        .docs-content code:not([class*="language-"]) {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            padding: 0.25rem 0.5rem !important;
+            border-radius: 0.375rem !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            font-weight: 500;
+        }
+
+        /* Code block container */
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        /* Override Prism.js styles */
+        .docs-content pre[class*="language-"] {
+            background: #1f2937 !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
+            margin: 1.5rem 0 !important;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .docs-content code[class*="language-"] {
+            background: transparent !important;
+            color: #f9fafb !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5;
+        }
+
+        /* Copy button for code blocks */
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            color: #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background: rgba(75, 85, 99, 0.8);
+            color: #f9fafb;
+        }
+
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        /* Sidebar styles */
+        .sidebar-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .sidebar-link.active {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 50;
+                background: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border: 1px solid #fed7aa;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header -->
+    <header class="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold">PyPositron Docs</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="text-sm font-medium hover:text-blue-600 transition-colors">Home</a>
+                <a href="/Home" class="text-sm font-medium text-blue-600">Docs</a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+         <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 h-screen sticky top-16 overflow-y-auto">
+            <div class="p-6">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Documentation</div>
+                    <nav class="space-y-1">
+                        <!--<a href="ORIGINALNAME.html" class="sidebar-link active">FORMATTEDNAME</a>-->
+                        <a href="/Browser-Objects" class="sidebar-link">Browser Objects</a>
+<a href="/CLI-Commands" class="sidebar-link">Cli Commands</a>
+<a href="/Document" class="sidebar-link">Document</a>
+<a href="/Element" class="sidebar-link">Element</a>
+<a href="/ElementList" class="sidebar-link">Elementlist</a>
+<a href="/Getting-Started" class="sidebar-link">Getting Started</a>
+<a href="/Global-Functions" class="sidebar-link">Global Functions</a>
+<a href="/Home" class="sidebar-link">Home</a>
+<a href="/HTMLWindow" class="sidebar-link">Htmlwindow</a>
+<a href="/Installation" class="sidebar-link">Installation</a>
+<a href="/Internal-Classes" class="sidebar-link">Internal Classes</a>
+<a href="/Library-Reference" class="sidebar-link">Library Reference</a>
+<a href="/PositronWindowWrapper" class="sidebar-link">Positronwindowwrapper</a>
+<a href="/Python-HTML-Integration" class="sidebar-link">Python Html Integration</a>
+<a href="/Quick-Start" class="sidebar-link">Quick Start</a>
+<a href="/Style" class="sidebar-link">Style</a>
+<a href="/Troubleshooting" class="sidebar-link">Troubleshooting</a>
+<a href="/Virtual-Environments" class="sidebar-link">Virtual Environments</a>
+                    </nav>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-8 max-w-4xl">
+            <div class="docs-content">
+                <!-- 
+                ============================================
+                INSERT CONVERTED UNSTYLED DOCS HTML HERE
+                ============================================
+                
+                This is where you should place the automatically converted
+                HTML content from your documentation source (Markdown, etc.).
+                All styling is handled by CSS classes above, so no inline
+                styles are needed.
+                
+                Example of what the converted HTML should look like:
+                -->
+                
+                <h1>HTMLWindow Class</h1>
+<p>The HTMLWindow class provides JavaScript window object functionality within PyPositron. It's available as <code>ui.htmlwindow</code> in your main function and represents the browser window that contains your HTML document. This class provides access to browser APIs, dialog methods, timing functions, and window management capabilities.</p>
+<h2>Overview</h2>
+<p>The HTMLWindow class is your gateway to browser-specific functionality in PyPositron. It allows you to:</p>
+<ul>
+<li>Display dialog boxes (alert, confirm, prompt)</li>
+<li>Manage timers and animations</li>
+<li>Control window properties and behavior</li>
+<li>Access browser objects (navigator, location, history)</li>
+<li>Handle window events and navigation</li>
+</ul>
+<h2>Properties</h2>
+<h3>Window State</h3>
+<ul>
+<li><code>closed -&gt; bool</code>: Returns true if a window is closed. <a href="https://www.w3schools.com/jsref/prop_win_closed.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/closed">MDN Reference</a></li>
+<li><code>name -&gt; str</code>: Sets or returns the name of a window. <a href="https://www.w3schools.com/jsref/prop_win_name.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/name">MDN Reference</a></li>
+</ul>
+<h3>Window Dimensions</h3>
+<ul>
+<li><code>innerHeight -&gt; int</code>: Returns the height of the window's content area (viewport) including scrollbars. <a href="https://www.w3schools.com/jsref/prop_win_innerheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/innerHeight">MDN Reference</a></li>
+<li><code>innerWidth -&gt; int</code>: Returns the width of a window's content area (viewport) including scrollbars. <a href="https://www.w3schools.com/jsref/prop_win_innerwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth">MDN Reference</a></li>
+<li><code>outerHeight -&gt; int</code>: Returns the height of the browser window, including toolbars/scrollbars. <a href="https://www.w3schools.com/jsref/prop_win_outerheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/outerHeight">MDN Reference</a></li>
+<li><code>outerWidth -&gt; int</code>: Returns the width of the browser window, including toolbars/scrollbars. <a href="https://www.w3schools.com/jsref/prop_win_outerwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/outerWidth">MDN Reference</a></li>
+</ul>
+<h3>Window Position</h3>
+<ul>
+<li><code>screenLeft -&gt; int</code>: Returns the horizontal coordinate of the window relative to the screen. <a href="https://www.w3schools.com/jsref/prop_win_screenleft.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenLeft">MDN Reference</a></li>
+<li><code>screenTop -&gt; int</code>: Returns the vertical coordinate of the window relative to the screen. <a href="https://www.w3schools.com/jsref/prop_win_screentop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenTop">MDN Reference</a></li>
+<li><code>screenX -&gt; int</code>: Returns the horizontal coordinate of the window relative to the screen. <a href="https://www.w3schools.com/jsref/prop_win_screenx.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenX">MDN Reference</a></li>
+<li><code>screenY -&gt; int</code>: Returns the vertical coordinate of the window relative to the screen. <a href="https://www.w3schools.com/jsref/prop_win_screeny.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screenY">MDN Reference</a></li>
+</ul>
+<h3>Scroll Position</h3>
+<ul>
+<li><code>pageXOffset -&gt; int</code>: Returns the pixels the current document has been scrolled (horizontally) from the upper left corner of the window. <a href="https://www.w3schools.com/jsref/prop_win_pagexoffset.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/pageXOffset">MDN Reference</a></li>
+<li><code>pageYOffset -&gt; int</code>: Returns the pixels the current document has been scrolled (vertically) from the upper left corner of the window. <a href="https://www.w3schools.com/jsref/prop_win_pageyoffset.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/pageYOffset">MDN Reference</a></li>
+<li><code>scrollX -&gt; int</code>: An alias of pageXOffset. <a href="https://www.w3schools.com/jsref/prop_win_scrollx.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollX">MDN Reference</a></li>
+<li><code>scrollY -&gt; int</code>: An alias of pageYOffset. <a href="https://www.w3schools.com/jsref/prop_win_scrolly.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollY">MDN Reference</a></li>
+</ul>
+<h3>Browser Objects</h3>
+<ul>
+<li><code>console -&gt; Console</code>: Returns the Console object for the window. <a href="https://www.w3schools.com/jsref/obj_console.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console">MDN Reference</a></li>
+<li><code>document -&gt; Document</code>: Returns the Document object for the window. <a href="https://www.w3schools.com/jsref/obj_document.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document">MDN Reference</a></li>
+<li><code>history -&gt; History</code>: Returns the History object for the window. <a href="https://www.w3schools.com/jsref/obj_history.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/History">MDN Reference</a></li>
+<li><code>location -&gt; Location</code>: Returns the Location object for the window. <a href="https://www.w3schools.com/jsref/obj_location.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">MDN Reference</a></li>
+<li><code>navigator -&gt; Navigator</code>: Returns the Navigator object for the window. <a href="https://www.w3schools.com/jsref/obj_navigator.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator">MDN Reference</a></li>
+<li><code>screen -&gt; Screen</code>: Returns the Screen object for the window. <a href="https://www.w3schools.com/jsref/obj_screen.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen">MDN Reference</a></li>
+</ul>
+<h3>Window Hierarchy</h3>
+<ul>
+<li><code>frameElement</code>: Returns the frame in which the window runs. <a href="https://www.w3schools.com/jsref/prop_win_frameelement.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/frameElement">MDN Reference</a></li>
+<li><code>frames</code>: Returns all window objects running in the window. <a href="https://www.w3schools.com/jsref/prop_win_frames.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/frames">MDN Reference</a></li>
+<li><code>length -&gt; int</code>: Returns the number of <code>&lt;iframe&gt;</code> elements in the current window. <a href="https://www.w3schools.com/jsref/prop_win_length.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/length">MDN Reference</a></li>
+<li><code>opener</code>: Returns a reference to the window that created the window. <a href="https://www.w3schools.com/jsref/prop_win_opener.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/opener">MDN Reference</a></li>
+<li><code>parent</code>: Returns the parent window of the current window. <a href="https://www.w3schools.com/jsref/prop_win_parent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/parent">MDN Reference</a></li>
+<li><code>self</code>: Returns the current window. <a href="https://www.w3schools.com/jsref/prop_win_self.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/self">MDN Reference</a></li>
+<li><code>top</code>: Returns the topmost browser window. <a href="https://www.w3schools.com/jsref/prop_win_top.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/top">MDN Reference</a></li>
+</ul>
+<h3>Storage</h3>
+<ul>
+<li><code>localStorage</code>: Allows to save key/value pairs in a web browser. Stores the data with no expiration date. <a href="https://www.w3schools.com/jsref/prop_win_localstorage.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">MDN Reference</a></li>
+<li><code>sessionStorage</code>: Allows to save key/value pairs in a web browser. Stores the data for one session. <a href="https://www.w3schools.com/jsref/prop_win_sessionstorage.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage">MDN Reference</a></li>
+</ul>
+<h2>Methods</h2>
+<h3>Dialog Methods</h3>
+<ul>
+<li><code>alert(message: str)</code>: Displays an alert box with a message and an OK button. <a href="https://www.w3schools.com/jsref/met_win_alert.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/alert">MDN Reference</a></li>
+<li><code>confirm(message: str) -&gt; bool</code>: Displays a dialog box with a message and an OK and a Cancel button. Returns True if OK is clicked, False if Cancel is clicked. <a href="https://www.w3schools.com/jsref/met_win_confirm.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm">MDN Reference</a></li>
+<li><code>prompt(message: str, default_value: str = '') -&gt; str</code>: Displays a dialog box that prompts the visitor for input. Returns the input string or None if cancelled. <a href="https://www.w3schools.com/jsref/met_win_prompt.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt">MDN Reference</a></li>
+</ul>
+<h3>Timing Methods</h3>
+<ul>
+<li><code>setTimeout(callback, milliseconds: int) -&gt; int</code>: Calls a function or evaluates an expression after a specified number of milliseconds. Returns a timer ID. <a href="https://www.w3schools.com/jsref/met_win_settimeout.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/setTimeout">MDN Reference</a></li>
+<li><code>clearTimeout(timeout_id: int)</code>: Clears a timer set with setTimeout(). <a href="https://www.w3schools.com/jsref/met_win_cleartimeout.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/clearTimeout">MDN Reference</a></li>
+<li><code>setInterval(callback, milliseconds: int) -&gt; int</code>: Calls a function or evaluates an expression at specified intervals (in milliseconds). Returns an interval ID. <a href="https://www.w3schools.com/jsref/met_win_setinterval.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">MDN Reference</a></li>
+<li><code>clearInterval(interval_id: int)</code>: Clears a timer set with setInterval(). <a href="https://www.w3schools.com/jsref/met_win_clearinterval.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/clearInterval">MDN Reference</a></li>
+</ul>
+<h3>Animation</h3>
+<ul>
+<li><code>requestAnimationFrame(callback) -&gt; int</code>: Requests the browser to call a function to update an animation before the next repaint. <a href="https://www.w3schools.com/jsref/met_win_requestanimationframe.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">MDN Reference</a></li>
+</ul>
+<h3>Window Management</h3>
+<ul>
+<li><code>open(url: str = '', name: str = '_blank', specs: str = '', replace: bool = False)</code>: Opens a new browser window. <a href="https://www.w3schools.com/jsref/met_win_open.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open">MDN Reference</a></li>
+<li><code>close()</code>: Closes the current window. <a href="https://www.w3schools.com/jsref/met_win_close.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/close">MDN Reference</a></li>
+<li><code>focus()</code>: Sets focus to the current window. <a href="https://www.w3schools.com/jsref/met_win_focus.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/focus">MDN Reference</a></li>
+<li><code>blur()</code>: Removes focus from the current window. <a href="https://www.w3schools.com/jsref/met_win_blur.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/blur">MDN Reference</a></li>
+</ul>
+<h3>Window Positioning and Sizing</h3>
+<ul>
+<li><code>moveTo(x: int, y: int)</code>: Moves a window to the specified position. <a href="https://www.w3schools.com/jsref/met_win_moveto.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/moveTo">MDN Reference</a></li>
+<li><code>moveBy(x: int, y: int)</code>: Moves a window relative to its current position. <a href="https://www.w3schools.com/jsref/met_win_moveby.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/moveBy">MDN Reference</a></li>
+<li><code>resizeTo(width: int, height: int)</code>: Resizes the window to the specified width and height. <a href="https://www.w3schools.com/jsref/met_win_resizeto.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/resizeTo">MDN Reference</a></li>
+<li><code>resizeBy(width: int, height: int)</code>: Resizes the window by the specified pixels. <a href="https://www.w3schools.com/jsref/met_win_resizeby.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/resizeBy">MDN Reference</a></li>
+</ul>
+<h3>Scrolling</h3>
+<ul>
+<li><code>scrollTo(x: int, y: int)</code>: Scrolls the document to the specified coordinates. <a href="https://www.w3schools.com/jsref/met_win_scrollto.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo">MDN Reference</a></li>
+<li><code>scrollBy(x: int, y: int)</code>: Scrolls the document by the specified number of pixels. <a href="https://www.w3schools.com/jsref/met_win_scrollby.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy">MDN Reference</a></li>
+</ul>
+<h3>Event Handling</h3>
+<ul>
+<li><code>addEventListener(event_type: str, callback: Callable) -&gt; bool</code>: Attaches an event handler to the window. <a href="https://www.w3schools.com/jsref/met_win_addeventlistener.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">MDN Reference</a></li>
+<li><code>removeEventListener(event_type: str, callback=None)</code>: Removes an event handler from the window. <a href="https://www.w3schools.com/jsref/met_win_removeeventlistener.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener">MDN Reference</a></li>
+</ul>
+<h3>Utility Methods</h3>
+<ul>
+<li><code>print()</code>: Prints the content of the current window. <a href="https://www.w3schools.com/jsref/met_win_print.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/print">MDN Reference</a></li>
+<li><code>stop()</code>: Stops the window from loading. <a href="https://www.w3schools.com/jsref/met_win_stop.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/stop">MDN Reference</a></li>
+</ul>
+<h3>CSS and Styling</h3>
+<ul>
+<li><code>getComputedStyle(element: Element, pseudo_element: str = None)</code>: Gets the current computed CSS styles applied to an element. <a href="https://www.w3schools.com/jsref/jsref_getcomputedstyle.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">MDN Reference</a></li>
+<li><code>matchMedia(media_query: str)</code>: Returns a MediaQueryList object representing the specified CSS media query string. <a href="https://www.w3schools.com/jsref/met_win_matchmedia.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia">MDN Reference</a></li>
+</ul>
+<h3>Selection and Encoding</h3>
+<ul>
+<li><code>getSelection()</code>: Returns a Selection object representing the range of text selected by the user. <a href="https://www.w3schools.com/jsref/met_win_getselection.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection">MDN Reference</a></li>
+<li><code>atob(encoded_string: str) -&gt; str</code>: Decodes a base-64 encoded string. <a href="https://www.w3schools.com/jsref/met_win_atob.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/atob">MDN Reference</a></li>
+<li><code>btoa(string: str) -&gt; str</code>: Encodes a string in base-64. <a href="https://www.w3schools.com/jsref/met_win_btoa.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/btoa">MDN Reference</a></li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Dialog Interactions</h3>
+<pre><code class="language-python">def main(ui):
+    def show_welcome():
+        ui.htmlwindow.alert(&quot;Welcome to PyPositron!&quot;)
+        
+        if ui.htmlwindow.confirm(&quot;Would you like to continue?&quot;):
+            name = ui.htmlwindow.prompt(&quot;What's your name?&quot;, &quot;User&quot;)
+            if name:
+                ui.htmlwindow.alert(f&quot;Hello, {name}!&quot;)
+                return name
+        return None
+    
+    # Trigger welcome dialog
+    welcome_btn = ui.document.getElementById(&quot;welcomeBtn&quot;)
+    if welcome_btn:
+        welcome_btn.addEventListener(&quot;click&quot;, show_welcome)
+</code></pre>
+<h3>Timer and Delays</h3>
+<pre><code class="language-python">def main(ui):
+    status_div = ui.document.getElementById(&quot;status&quot;)
+    
+    def show_message(text, duration=3000):
+        status_div.innerText = text
+        status_div.style.opacity = &quot;1&quot;
+        
+        # Auto-hide after duration
+        def hide_message():
+            status_div.style.opacity = &quot;0&quot;
+        
+        ui.htmlwindow.setTimeout(hide_message, duration)
+    
+    def start_countdown():
+        count = 5
+        countdown_display = ui.document.getElementById(&quot;countdown&quot;)
+        
+        def update_countdown():
+            nonlocal count
+            if count &gt; 0:
+                countdown_display.innerText = f&quot;Starting in {count}...&quot;
+                count -= 1
+                ui.htmlwindow.setTimeout(update_countdown, 1000)
+            else:
+                countdown_display.innerText = &quot;Started!&quot;
+                show_message(&quot;Process completed!&quot;, 2000)
+        
+        update_countdown()
+    
+    start_btn = ui.document.getElementById(&quot;startBtn&quot;)
+    if start_btn:
+        start_btn.addEventListener(&quot;click&quot;, start_countdown)
+</code></pre>
+<h3>Auto-save with Intervals</h3>
+<pre><code class="language-python">def main(ui):
+    editor = ui.document.getElementById(&quot;editor&quot;)
+    save_status = ui.document.getElementById(&quot;saveStatus&quot;)
+    auto_save_interval = None
+    
+    def save_content():
+        content = editor.value
+        # Simulate saving to localStorage
+        ui.htmlwindow.localStorage.setItem(&quot;draft&quot;, content)
+        save_status.innerText = &quot;Saved&quot;
+        save_status.style.color = &quot;green&quot;
+        
+        # Clear status after 2 seconds
+        ui.htmlwindow.setTimeout(lambda: setattr(save_status, 'innerText', ''), 2000)
+    
+    def start_auto_save():
+        nonlocal auto_save_interval
+        # Save every 30 seconds
+        auto_save_interval = ui.htmlwindow.setInterval(save_content, 30000)
+        save_status.innerText = &quot;Auto-save enabled&quot;
+    
+    def stop_auto_save():
+        nonlocal auto_save_interval
+        if auto_save_interval:
+            ui.htmlwindow.clearInterval(auto_save_interval)
+            auto_save_interval = None
+            save_status.innerText = &quot;Auto-save disabled&quot;
+    
+    # Load saved content on startup
+    if editor:
+        saved_content = ui.htmlwindow.localStorage.getItem(&quot;draft&quot;)
+        if saved_content:
+            editor.value = saved_content
+        
+        # Start auto-save when user types
+        def on_input():
+            if not auto_save_interval:
+                start_auto_save()
+        
+        editor.addEventListener(&quot;input&quot;, on_input)
+    
+    # Manual save button
+    save_btn = ui.document.getElementById(&quot;saveBtn&quot;)
+    if save_btn:
+        save_btn.addEventListener(&quot;click&quot;, save_content)
+</code></pre>
+<h3>Window Information Display</h3>
+<pre><code class="language-python">def main(ui):
+    def update_window_info():
+        info_div = ui.document.getElementById(&quot;windowInfo&quot;)
+        
+        info_html = f&quot;&quot;&quot;
+        &lt;h3&gt;Window Information&lt;/h3&gt;
+        &lt;p&gt;&lt;strong&gt;Inner Size:&lt;/strong&gt; {ui.htmlwindow.innerWidth} x {ui.htmlwindow.innerHeight}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Outer Size:&lt;/strong&gt; {ui.htmlwindow.outerWidth} x {ui.htmlwindow.outerHeight}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Screen Position:&lt;/strong&gt; ({ui.htmlwindow.screenX}, {ui.htmlwindow.screenY})&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Scroll Position:&lt;/strong&gt; ({ui.htmlwindow.scrollX}, {ui.htmlwindow.scrollY})&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;User Agent:&lt;/strong&gt; {ui.htmlwindow.navigator.userAgent}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Online:&lt;/strong&gt; {'Yes' if ui.htmlwindow.navigator.onLine else 'No'}&lt;/p&gt;
+        &quot;&quot;&quot;
+        
+        info_div.innerHTML = info_html
+    
+    # Update on window resize
+    ui.htmlwindow.addEventListener(&quot;resize&quot;, update_window_info)
+    ui.htmlwindow.addEventListener(&quot;scroll&quot;, update_window_info)
+    
+    # Initial update
+    update_window_info()
+    
+    # Refresh button
+    refresh_btn = ui.document.getElementById(&quot;refreshInfo&quot;)
+    if refresh_btn:
+        refresh_btn.addEventListener(&quot;click&quot;, update_window_info)
+</code></pre>
+<h3>Smooth Scrolling</h3>
+<pre><code class="language-python">def main(ui):
+    def smooth_scroll_to_top():
+        def scroll_step():
+            current_scroll = ui.htmlwindow.scrollY
+            if current_scroll &gt; 0:
+                ui.htmlwindow.scrollTo(0, current_scroll - 50)
+                ui.htmlwindow.requestAnimationFrame(scroll_step)
+        
+        scroll_step()
+    
+    def scroll_to_element(element_id):
+        element = ui.document.getElementById(element_id)
+        if element:
+            element.scrollIntoView(True)
+    
+    # Scroll to top button
+    top_btn = ui.document.getElementById(&quot;scrollTopBtn&quot;)
+    if top_btn:
+        top_btn.addEventListener(&quot;click&quot;, smooth_scroll_to_top)
+    
+    # Navigation links
+    nav_links = ui.document.getElementsByClassName(&quot;nav-link&quot;)
+    for link in nav_links:
+        target_id = link.getAttribute(&quot;data-target&quot;)
+        if target_id:
+            link.addEventListener(&quot;click&quot;, lambda: scroll_to_element(target_id))
+</code></pre>
+<h3>Responsive Design Helpers</h3>
+<pre><code class="language-python">def main(ui):
+    def check_responsive_breakpoint():
+        width = ui.htmlwindow.innerWidth
+        
+        if width &gt;= 1200:
+            return &quot;xl&quot;
+        elif width &gt;= 992:
+            return &quot;lg&quot;
+        elif width &gt;= 768:
+            return &quot;md&quot;
+        elif width &gt;= 576:
+            return &quot;sm&quot;
+        else:
+            return &quot;xs&quot;
+    
+    def apply_responsive_layout():
+        breakpoint = check_responsive_breakpoint()
+        body = ui.document.body
+        
+        # Remove existing breakpoint classes
+        class_list = body.className.split()
+        class_list = [cls for cls in class_list if not cls.startswith(&quot;bp-&quot;)]
+        
+        # Add current breakpoint class
+        class_list.append(f&quot;bp-{breakpoint}&quot;)
+        body.className = &quot; &quot;.join(class_list)
+        
+        # Show current breakpoint
+        breakpoint_display = ui.document.getElementById(&quot;currentBreakpoint&quot;)
+        if breakpoint_display:
+            breakpoint_display.innerText = f&quot;Current breakpoint: {breakpoint}&quot;
+    
+    # Apply layout on resize
+    ui.htmlwindow.addEventListener(&quot;resize&quot;, apply_responsive_layout)
+    
+    # Initial layout
+    apply_responsive_layout()
+    
+    # Media query matching example
+    def setup_media_queries():
+        mobile_query = ui.htmlwindow.matchMedia(&quot;(max-width: 767px)&quot;)
+        
+        def handle_mobile_change(mql):
+            mobile_nav = ui.document.getElementById(&quot;mobileNav&quot;)
+            desktop_nav = ui.document.getElementById(&quot;desktopNav&quot;)
+            
+            if mql.matches:
+                # Mobile view
+                if mobile_nav:
+                    mobile_nav.style.display = &quot;block&quot;
+                if desktop_nav:
+                    desktop_nav.style.display = &quot;none&quot;
+            else:
+                # Desktop view
+                if mobile_nav:
+                    mobile_nav.style.display = &quot;none&quot;
+                if desktop_nav:
+                    desktop_nav.style.display = &quot;block&quot;
+        
+        mobile_query.addEventListener(&quot;change&quot;, handle_mobile_change)
+        handle_mobile_change(mobile_query)  # Initial check
+    
+    setup_media_queries()
+</code></pre>
+<h3>Print Functionality</h3>
+<pre><code class="language-python">def main(ui):
+    def prepare_for_print():
+        # Hide non-printable elements
+        no_print_elements = ui.document.getElementsByClassName(&quot;no-print&quot;)
+        for element in no_print_elements:
+            element.style.display = &quot;none&quot;
+        
+        # Add print-specific styling
+        print_style = ui.document.createElement(&quot;style&quot;)
+        print_style.innerHTML = &quot;&quot;&quot;
+        @media print {
+            body { font-size: 12pt; }
+            .print-only { display: block !important; }
+            .no-print { display: none !important; }
+        }
+        &quot;&quot;&quot;
+        ui.document.head.appendChild(print_style)
+    
+    def print_page():
+        prepare_for_print()
+        ui.htmlwindow.print()
+    
+    print_btn = ui.document.getElementById(&quot;printBtn&quot;)
+    if print_btn:
+        print_btn.addEventListener(&quot;click&quot;, print_page)
+</code></pre>
+<h2>Best Practices</h2>
+<ol>
+<li>
+<p><strong>Handle dialog return values</strong>: Always check return values from <code>confirm()</code> and <code>prompt()</code> methods.</p>
+</li>
+<li>
+<p><strong>Clean up timers</strong>: Always clear intervals and timeouts when they're no longer needed to prevent memory leaks.</p>
+</li>
+<li>
+<p><strong>Use requestAnimationFrame for animations</strong>: For smooth animations, prefer <code>requestAnimationFrame()</code> over <code>setTimeout()</code>.</p>
+</li>
+<li>
+<p><strong>Check window properties safely</strong>: Some window properties may not be available in all contexts.</p>
+</li>
+<li>
+<p><strong>Responsive design</strong>: Use window dimension properties and media queries to create responsive layouts.</p>
+</li>
+<li>
+<p><strong>Save timer IDs</strong>: Store timer IDs returned by <code>setTimeout()</code> and <code>setInterval()</code> so you can clear them later.</p>
+</li>
+</ol>
+<pre><code class="language-python"># Good practice example
+def main(ui):
+    timer_id = None
+    
+    def start_timer():
+        nonlocal timer_id
+        if timer_id:
+            ui.htmlwindow.clearInterval(timer_id)
+        timer_id = ui.htmlwindow.setInterval(update_function, 1000)
+    
+    def stop_timer():
+        nonlocal timer_id
+        if timer_id:
+            ui.htmlwindow.clearInterval(timer_id)
+            timer_id = None
+</code></pre>
+<h2>Common Window Events</h2>
+<p>You can listen for these events on the window object:</p>
+<ul>
+<li><code>&quot;resize&quot;</code>: Window is resized</li>
+<li><code>&quot;scroll&quot;</code>: Window is scrolled</li>
+<li><code>&quot;beforeunload&quot;</code>: Before the window unloads</li>
+<li><code>&quot;load&quot;</code>: Window has finished loading</li>
+<li><code>&quot;focus&quot;</code>: Window gains focus</li>
+<li><code>&quot;blur&quot;</code>: Window loses focus</li>
+</ul>
+<h2>Related Classes</h2>
+<ul>
+<li><strong><a href="Console">Console</a></strong>: Browser console for debugging</li>
+<li><strong><a href="Browser-Objects.md#history">History</a></strong>: Browser history navigation</li>
+<li><strong><a href="Browser-Objects.md#location">Location</a></strong>: URL and navigation control</li>
+<li><strong><a href="Browser-Objects.md#navigator">Navigator</a></strong>: Browser information</li>
+<li><strong><a href="Browser-Objects.md#screen">Screen</a></strong>: Screen information</li>
+<li><strong><a href="Document">Document</a></strong>: Document manipulation</li>
+<li><strong><a href="Element">Element</a></strong>: Individual DOM elements</li>
+</ul>
+
+                
+                <!-- 
+                ============================================
+                END OF CONVERTED DOCS INSERTION POINT
+                ============================================
+                -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Prism.js
+        Prism.manual = true;
+
+        // Copy button functionality for all code blocks
+        function addCopyButtons() {
+            const codeBlocks = document.querySelectorAll('pre[class*="language-"]');
+            
+            codeBlocks.forEach(pre => {
+                // Create container if it doesn't exist
+                if (!pre.parentElement.classList.contains('code-block-container')) {
+                    const container = document.createElement('div');
+                    container.className = 'code-block-container';
+                    pre.parentNode.insertBefore(container, pre);
+                    container.appendChild(pre);
+                }
+                
+                const container = pre.parentElement;
+                const codeElement = pre.querySelector('code');
+                
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = `
+                    <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                `;
+                
+                copyButton.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(codeElement.textContent);
+                        
+                        // Change to check icon
+                        copyButton.innerHTML = `
+                            <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        `;
+                        copyButton.classList.add('copied');
+                        
+                        // Revert back after 2 seconds
+                        setTimeout(() => {
+                            copyButton.innerHTML = `
+                                <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            `;
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
+                
+                container.appendChild(copyButton);
+            });
+        }
+
+        // Sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-hidden');
+            overlay.classList.toggle('active');
+        }
+
+        // Smooth scrolling for sidebar links (only for anchor links)
+function setupSmoothScrolling() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // Only handle anchor links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Get target section
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            } else {
+                // For regular links (to other pages), just close mobile sidebar if open
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+                // Let the browser handle the navigation normally
+            }
+        });
+    });
+}
+
+        // Highlight active section based on scroll position (only for anchor links)
+function setupScrollSpy() {
+    const sections = document.querySelectorAll('section[id], h1[id], h2[id], h3[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[href^="#"]'); // Only anchor links
+    
+    function updateActiveLink() {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            
+            if (window.scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink(); // Initial call
+}
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight syntax
+            Prism.highlightAll();
+            
+            // Add copy buttons after syntax highlighting
+            setTimeout(() => {
+                addCopyButtons();
+            }, 100);
+            
+            setupSmoothScrolling();
+            setupScrollSpy();
+        });
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (window.innerWidth < 768 && 
+                !sidebar.contains(e.target) && 
+                !e.target.closest('button[onclick="toggleSidebar()"]') &&
+                !sidebar.classList.contains('mobile-hidden')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

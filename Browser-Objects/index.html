@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPositron Docs - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .sidebar.mobile-hidden {
+            transform: translateX(-100%);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Documentation Content Styles */
+        .docs-content {
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .docs-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .docs-content h1:first-child {
+            margin-top: 0;
+        }
+
+        .docs-content h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .docs-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+            color: #374151;
+        }
+
+        .docs-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            color: #4b5563;
+        }
+
+        .docs-content p {
+            margin-bottom: 1rem;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .docs-content ul, .docs-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .docs-content ul {
+            list-style-type: disc;
+        }
+
+        .docs-content ol {
+            list-style-type: decimal;
+        }
+
+        .docs-content li {
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .docs-content a {
+            color: #3b82f6;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .docs-content a:hover {
+            color: #1d4ed8;
+        }
+
+        .docs-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .docs-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .docs-content th, .docs-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .docs-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Inline code styling */
+        .docs-content code:not([class*="language-"]) {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            padding: 0.25rem 0.5rem !important;
+            border-radius: 0.375rem !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            font-weight: 500;
+        }
+
+        /* Code block container */
+        .code-block-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        /* Override Prism.js styles */
+        .docs-content pre[class*="language-"] {
+            background: #1f2937 !important;
+            border-radius: 0.5rem !important;
+            padding: 1.5rem !important;
+            margin: 1.5rem 0 !important;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .docs-content code[class*="language-"] {
+            background: transparent !important;
+            color: #f9fafb !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5;
+        }
+
+        /* Copy button for code blocks */
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            color: #d1d5db;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            z-index: 10;
+        }
+
+        .copy-button:hover {
+            background: rgba(75, 85, 99, 0.8);
+            color: #f9fafb;
+        }
+
+        .copy-button.copied {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        /* Sidebar styles */
+        .sidebar-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .sidebar-link.active {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 50;
+                background: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border: 1px solid #fed7aa;
+            color: #92400e;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Header -->
+    <header class="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold">PyPositron Docs</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/" class="text-sm font-medium hover:text-blue-600 transition-colors">Home</a>
+                <a href="/Home" class="text-sm font-medium text-blue-600">Docs</a>
+                <a href="#" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+         <aside id="sidebar" class="sidebar w-64 bg-white border-r border-gray-200 h-screen sticky top-16 overflow-y-auto">
+            <div class="p-6">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Documentation</div>
+                    <nav class="space-y-1">
+                        <!--<a href="ORIGINALNAME.html" class="sidebar-link active">FORMATTEDNAME</a>-->
+                        <a href="/Browser-Objects" class="sidebar-link">Browser Objects</a>
+<a href="/CLI-Commands" class="sidebar-link">Cli Commands</a>
+<a href="/Document" class="sidebar-link">Document</a>
+<a href="/Element" class="sidebar-link">Element</a>
+<a href="/ElementList" class="sidebar-link">Elementlist</a>
+<a href="/Getting-Started" class="sidebar-link">Getting Started</a>
+<a href="/Global-Functions" class="sidebar-link">Global Functions</a>
+<a href="/Home" class="sidebar-link">Home</a>
+<a href="/HTMLWindow" class="sidebar-link">Htmlwindow</a>
+<a href="/Installation" class="sidebar-link">Installation</a>
+<a href="/Internal-Classes" class="sidebar-link">Internal Classes</a>
+<a href="/Library-Reference" class="sidebar-link">Library Reference</a>
+<a href="/PositronWindowWrapper" class="sidebar-link">Positronwindowwrapper</a>
+<a href="/Python-HTML-Integration" class="sidebar-link">Python Html Integration</a>
+<a href="/Quick-Start" class="sidebar-link">Quick Start</a>
+<a href="/Style" class="sidebar-link">Style</a>
+<a href="/Troubleshooting" class="sidebar-link">Troubleshooting</a>
+<a href="/Virtual-Environments" class="sidebar-link">Virtual Environments</a>
+                    </nav>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-8 max-w-4xl">
+            <div class="docs-content">
+                <!-- 
+                ============================================
+                INSERT CONVERTED UNSTYLED DOCS HTML HERE
+                ============================================
+                
+                This is where you should place the automatically converted
+                HTML content from your documentation source (Markdown, etc.).
+                All styling is handled by CSS classes above, so no inline
+                styles are needed.
+                
+                Example of what the converted HTML should look like:
+                -->
+                
+                <h1>Browser Objects</h1>
+<p>PyPositron provides access to several browser objects that give you information about the browser environment, navigation history, screen properties, and more. These objects are accessed through the <code>ui.htmlwindow</code> object and provide the same functionality as their JavaScript counterparts.</p>
+<h2>Console</h2>
+<p>The Console object provides access to the browser's debugging console. It's useful for logging, debugging, and outputting information during development.</p>
+<h3>Properties</h3>
+<p>The Console object primarily consists of methods rather than properties.</p>
+<h3>Methods</h3>
+<ul>
+<li><code>assert(assertion: bool, *args)</code>: Writes an error message to the console if the assertion is false. <a href="https://www.w3schools.com/jsref/met_console_assert.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/assert">MDN Reference</a></li>
+<li><code>clear()</code>: Clears the console. <a href="https://www.w3schools.com/jsref/met_console_clear.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/clear">MDN Reference</a></li>
+<li><code>count(label: str = 'default')</code>: Logs the number of times this particular call to count() has been called. <a href="https://www.w3schools.com/jsref/met_console_count.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/count">MDN Reference</a></li>
+<li><code>error(*args)</code>: Outputs an error message to the console. <a href="https://www.w3schools.com/jsref/met_console_error.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/error">MDN Reference</a></li>
+<li><code>group(*args)</code>: Creates a new inline group in the console. <a href="https://www.w3schools.com/jsref/met_console_group.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/group">MDN Reference</a></li>
+<li><code>groupCollapsed(*args)</code>: Creates a new inline group in the console that is initially collapsed. <a href="https://www.w3schools.com/jsref/met_console_groupcollapsed.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/groupCollapsed">MDN Reference</a></li>
+<li><code>groupEnd()</code>: Exits the current inline group in the console. <a href="https://www.w3schools.com/jsref/met_console_groupend.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/groupEnd">MDN Reference</a></li>
+<li><code>info(*args)</code>: Outputs an informational message to the console. <a href="https://www.w3schools.com/jsref/met_console_info.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/info">MDN Reference</a></li>
+<li><code>log(*args)</code>: Outputs a message to the console. <a href="https://www.w3schools.com/jsref/met_console_log.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/log">MDN Reference</a></li>
+<li><code>table(data)</code>: Displays tabular data as a table. <a href="https://www.w3schools.com/jsref/met_console_table.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/table">MDN Reference</a></li>
+<li><code>time(label: str = 'default')</code>: Starts a timer you can use to track how long an operation takes. <a href="https://www.w3schools.com/jsref/met_console_time.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/time">MDN Reference</a></li>
+<li><code>timeEnd(label: str = 'default')</code>: Stops a timer that was previously started by console.time(). <a href="https://www.w3schools.com/jsref/met_console_timeend.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/timeEnd">MDN Reference</a></li>
+<li><code>trace(*args)</code>: Outputs a stack trace to the console. <a href="https://www.w3schools.com/jsref/met_console_trace.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/trace">MDN Reference</a></li>
+<li><code>warn(*args)</code>: Outputs a warning message to the console. <a href="https://www.w3schools.com/jsref/met_console_warn.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/console/warn">MDN Reference</a></li>
+</ul>
+<h3>Usage Examples</h3>
+<pre><code class="language-python">def main(ui):
+    console = ui.htmlwindow.console
+    
+    # Basic logging
+    console.log(&quot;Application started&quot;)
+    console.info(&quot;This is informational&quot;)
+    console.warn(&quot;This is a warning&quot;)
+    console.error(&quot;This is an error&quot;)
+    
+    # Grouped logging
+    console.group(&quot;User Actions&quot;)
+    console.log(&quot;User clicked button&quot;)
+    console.log(&quot;User entered text&quot;)
+    console.groupEnd()
+    
+    # Timing operations
+    console.time(&quot;data-processing&quot;)
+    # ... some operation
+    console.timeEnd(&quot;data-processing&quot;)
+    
+    # Counting
+    for i in range(5):
+        console.count(&quot;loop-iteration&quot;)
+    
+    # Clear console
+    console.clear()
+</code></pre>
+<h2>History</h2>
+<p>The History object contains the URLs visited by the user (within a browser window). It provides methods to navigate through the browser history.</p>
+<h3>Properties</h3>
+<ul>
+<li><code>length -&gt; int</code>: Returns the number of URLs (pages) in the history list. <a href="https://www.w3schools.com/jsref/prop_his_length.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/length">MDN Reference</a></li>
+</ul>
+<h3>Methods</h3>
+<ul>
+<li><code>back()</code>: Loads the previous URL (page) in the history list. <a href="https://www.w3schools.com/jsref/met_his_back.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/back">MDN Reference</a></li>
+<li><code>forward()</code>: Loads the next URL (page) in the history list. <a href="https://www.w3schools.com/jsref/met_his_forward.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/forward">MDN Reference</a></li>
+<li><code>go(number: int)</code>: Loads a specific URL (page) from the history list. <a href="https://www.w3schools.com/jsref/met_his_go.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/go">MDN Reference</a></li>
+</ul>
+<h3>Usage Examples</h3>
+<pre><code class="language-python">def main(ui):
+    history = ui.htmlwindow.history
+    
+    # Navigation buttons
+    back_btn = ui.document.getElementById(&quot;backBtn&quot;)
+    forward_btn = ui.document.getElementById(&quot;forwardBtn&quot;)
+    
+    def go_back():
+        if history.length &gt; 1:
+            history.back()
+    
+    def go_forward():
+        history.forward()
+    
+    back_btn.addEventListener(&quot;click&quot;, go_back)
+    forward_btn.addEventListener(&quot;click&quot;, go_forward)
+    
+    # Display history length
+    history_info = ui.document.getElementById(&quot;historyInfo&quot;)
+    history_info.innerText = f&quot;History has {history.length} entries&quot;
+</code></pre>
+<h2>Location</h2>
+<p>The Location object contains information about the current URL and provides methods to navigate to different URLs.</p>
+<h3>Properties</h3>
+<ul>
+<li><code>hash -&gt; str</code>: Sets or returns the anchor part (#) of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_hash.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/hash">MDN Reference</a></li>
+<li><code>host -&gt; str</code>: Sets or returns the hostname and port number of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_host.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/host">MDN Reference</a></li>
+<li><code>hostname -&gt; str</code>: Sets or returns the hostname of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_hostname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/hostname">MDN Reference</a></li>
+<li><code>href -&gt; str</code>: Sets or returns the entire URL. <a href="https://www.w3schools.com/jsref/prop_loc_href.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/href">MDN Reference</a></li>
+<li><code>origin -&gt; str</code>: Returns the protocol, hostname and port number of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_origin.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/origin">MDN Reference</a></li>
+<li><code>pathname -&gt; str</code>: Sets or returns the path name of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_pathname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/pathname">MDN Reference</a></li>
+<li><code>port -&gt; str</code>: Sets or returns the port number of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_port.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/port">MDN Reference</a></li>
+<li><code>protocol -&gt; str</code>: Sets or returns the protocol of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_protocol.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/protocol">MDN Reference</a></li>
+<li><code>search -&gt; str</code>: Sets or returns the querystring part of a URL. <a href="https://www.w3schools.com/jsref/prop_loc_search.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/search">MDN Reference</a></li>
+</ul>
+<h3>Methods</h3>
+<ul>
+<li><code>assign(url: str)</code>: Loads a new document. <a href="https://www.w3schools.com/jsref/met_loc_assign.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/assign">MDN Reference</a></li>
+<li><code>reload(force_reload: bool = False)</code>: Reloads the current document. <a href="https://www.w3schools.com/jsref/met_loc_reload.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/reload">MDN Reference</a></li>
+<li><code>replace(url: str)</code>: Replaces the current document with a new one. <a href="https://www.w3schools.com/jsref/met_loc_replace.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/replace">MDN Reference</a></li>
+</ul>
+<h3>Usage Examples</h3>
+<pre><code class="language-python">def main(ui):
+    location = ui.htmlwindow.location
+    
+    # Display current URL information
+    url_info = ui.document.getElementById(&quot;urlInfo&quot;)
+    url_info.innerHTML = f&quot;&quot;&quot;
+    &lt;h3&gt;Current URL Information&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Full URL:&lt;/strong&gt; {location.href}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Protocol:&lt;/strong&gt; {location.protocol}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Host:&lt;/strong&gt; {location.host}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Pathname:&lt;/strong&gt; {location.pathname}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Search:&lt;/strong&gt; {location.search}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Hash:&lt;/strong&gt; {location.hash}&lt;/p&gt;
+    &quot;&quot;&quot;
+    
+    # Navigation functions
+    def navigate_to_page(url):
+        location.assign(url)
+    
+    def reload_page():
+        if ui.htmlwindow.confirm(&quot;Reload the page?&quot;):
+            location.reload()
+    
+    # URL manipulation
+    def change_hash(new_hash):
+        location.hash = new_hash
+    
+    # Set up navigation buttons
+    reload_btn = ui.document.getElementById(&quot;reloadBtn&quot;)
+    if reload_btn:
+        reload_btn.addEventListener(&quot;click&quot;, reload_page)
+</code></pre>
+<h2>Navigator</h2>
+<p>The Navigator object contains information about the browser and the user's environment.</p>
+<h3>Properties</h3>
+<ul>
+<li><code>appCodeName -&gt; str</code>: Returns the application code name of the browser. <a href="https://www.w3schools.com/jsref/prop_nav_appcodename.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/appCodeName">MDN Reference</a></li>
+<li><code>appName -&gt; str</code>: Returns the application name of the browser. <a href="https://www.w3schools.com/jsref/prop_nav_appname.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/appName">MDN Reference</a></li>
+<li><code>appVersion -&gt; str</code>: Returns the version information of the browser. <a href="https://www.w3schools.com/jsref/prop_nav_appversion.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/appVersion">MDN Reference</a></li>
+<li><code>cookieEnabled -&gt; bool</code>: Returns true if browser cookies are enabled. <a href="https://www.w3schools.com/jsref/prop_nav_cookieenabled.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/cookieEnabled">MDN Reference</a></li>
+<li><code>geolocation</code>: Returns a geolocation object that can be used to locate the user's position. <a href="https://www.w3schools.com/jsref/prop_nav_geolocation.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation">MDN Reference</a></li>
+<li><code>language -&gt; str</code>: Returns the browser's language. <a href="https://www.w3schools.com/jsref/prop_nav_language.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language">MDN Reference</a></li>
+<li><code>onLine -&gt; bool</code>: Returns true if the browser is online. <a href="https://www.w3schools.com/jsref/prop_nav_online.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine">MDN Reference</a></li>
+<li><code>platform -&gt; str</code>: Returns the platform of the browser. <a href="https://www.w3schools.com/jsref/prop_nav_platform.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/platform">MDN Reference</a></li>
+<li><code>product -&gt; str</code>: Returns the product name of the browser. <a href="https://www.w3schools.com/jsref/prop_nav_product.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/product">MDN Reference</a></li>
+<li><code>userAgent -&gt; str</code>: Returns the user-agent header sent by the browser to the server. <a href="https://www.w3schools.com/jsref/prop_nav_useragent.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/userAgent">MDN Reference</a></li>
+</ul>
+<h3>Methods</h3>
+<ul>
+<li><code>javaEnabled() -&gt; bool</code>: Returns whether Java is enabled in the browser. <a href="https://www.w3schools.com/jsref/met_nav_javaenabled.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/javaEnabled">MDN Reference</a></li>
+</ul>
+<h3>Usage Examples</h3>
+<pre><code class="language-python">def main(ui):
+    navigator = ui.htmlwindow.navigator
+    
+    # Display browser information
+    browser_info = ui.document.getElementById(&quot;browserInfo&quot;)
+    browser_info.innerHTML = f&quot;&quot;&quot;
+    &lt;h3&gt;Browser Information&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Browser Name:&lt;/strong&gt; {navigator.appName}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Browser Version:&lt;/strong&gt; {navigator.appVersion}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;User Agent:&lt;/strong&gt; {navigator.userAgent}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Platform:&lt;/strong&gt; {navigator.platform}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Language:&lt;/strong&gt; {navigator.language}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Cookies Enabled:&lt;/strong&gt; {'Yes' if navigator.cookieEnabled else 'No'}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Online:&lt;/strong&gt; {'Yes' if navigator.onLine else 'No'}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Java Enabled:&lt;/strong&gt; {'Yes' if navigator.javaEnabled() else 'No'}&lt;/p&gt;
+    &quot;&quot;&quot;
+    
+    # Feature detection
+    def check_features():
+        features = []
+        
+        if navigator.cookieEnabled:
+            features.append(&quot;Cookies&quot;)
+        
+        if navigator.javaEnabled():
+            features.append(&quot;Java&quot;)
+        
+        if hasattr(navigator, 'geolocation'):
+            features.append(&quot;Geolocation&quot;)
+        
+        return features
+    
+    # Online/offline detection
+    def update_connection_status():
+        status_element = ui.document.getElementById(&quot;connectionStatus&quot;)
+        if navigator.onLine:
+            status_element.innerText = &quot;Online&quot;
+            status_element.style.color = &quot;green&quot;
+        else:
+            status_element.innerText = &quot;Offline&quot;
+            status_element.style.color = &quot;red&quot;
+    
+    # Monitor online/offline events
+    ui.htmlwindow.addEventListener(&quot;online&quot;, update_connection_status)
+    ui.htmlwindow.addEventListener(&quot;offline&quot;, update_connection_status)
+    update_connection_status()
+</code></pre>
+<h2>Screen</h2>
+<p>The Screen object contains information about the user's screen and display.</p>
+<h3>Properties</h3>
+<ul>
+<li><code>availHeight -&gt; int</code>: Returns the height of the screen (excluding the Windows Taskbar). <a href="https://www.w3schools.com/jsref/prop_screen_availheight.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/availHeight">MDN Reference</a></li>
+<li><code>availWidth -&gt; int</code>: Returns the width of the screen (excluding the Windows Taskbar). <a href="https://www.w3schools.com/jsref/prop_screen_availwidth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/availWidth">MDN Reference</a></li>
+<li><code>colorDepth -&gt; int</code>: Returns the bit depth of the color palette for displaying images. <a href="https://www.w3schools.com/jsref/prop_screen_colordepth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/colorDepth">MDN Reference</a></li>
+<li><code>height -&gt; int</code>: Returns the total height of the screen. <a href="https://www.w3schools.com/jsref/prop_screen_height.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/height">MDN Reference</a></li>
+<li><code>pixelDepth -&gt; int</code>: Returns the color resolution (in bits per pixel) of the screen. <a href="https://www.w3schools.com/jsref/prop_screen_pixeldepth.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/pixelDepth">MDN Reference</a></li>
+<li><code>width -&gt; int</code>: Returns the total width of the screen. <a href="https://www.w3schools.com/jsref/prop_screen_width.asp">W3Schools Reference</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen/width">MDN Reference</a></li>
+</ul>
+<h3>Usage Examples</h3>
+<pre><code class="language-python">def main(ui):
+    screen = ui.htmlwindow.screen
+    
+    # Display screen information
+    screen_info = ui.document.getElementById(&quot;screenInfo&quot;)
+    screen_info.innerHTML = f&quot;&quot;&quot;
+    &lt;h3&gt;Screen Information&lt;/h3&gt;
+    &lt;p&gt;&lt;strong&gt;Total Size:&lt;/strong&gt; {screen.width} x {screen.height}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Available Size:&lt;/strong&gt; {screen.availWidth} x {screen.availHeight}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Color Depth:&lt;/strong&gt; {screen.colorDepth} bits&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Pixel Depth:&lt;/strong&gt; {screen.pixelDepth} bits&lt;/p&gt;
+    &quot;&quot;&quot;
+    
+    # Responsive design based on screen size
+    def adjust_layout():
+        if screen.width &lt; 1024:
+            # Small screen layout
+            ui.document.body.className = &quot;small-screen&quot;
+        elif screen.width &lt; 1920:
+            # Medium screen layout
+            ui.document.body.className = &quot;medium-screen&quot;
+        else:
+            # Large screen layout
+            ui.document.body.className = &quot;large-screen&quot;
+    
+    adjust_layout()
+    
+    # Center window on screen
+    def center_window():
+        window_width = ui.htmlwindow.outerWidth
+        window_height = ui.htmlwindow.outerHeight
+        
+        x = (screen.availWidth - window_width) // 2
+        y = (screen.availHeight - window_height) // 2
+        
+        ui.htmlwindow.moveTo(x, y)
+    
+    center_btn = ui.document.getElementById(&quot;centerBtn&quot;)
+    if center_btn:
+        center_btn.addEventListener(&quot;click&quot;, center_window)
+</code></pre>
+<h2>Complete Usage Example</h2>
+<p>Here's a comprehensive example that uses all the browser objects together:</p>
+<pre><code class="language-python">import py_positron
+
+def main(ui):
+    # Get references to all browser objects
+    console = ui.htmlwindow.console
+    history = ui.htmlwindow.history
+    location = ui.htmlwindow.location
+    navigator = ui.htmlwindow.navigator
+    screen = ui.htmlwindow.screen
+    
+    console.log(&quot;Application initialized&quot;)
+    
+    # Create a system information display
+    def update_system_info():
+        info_container = ui.document.getElementById(&quot;systemInfo&quot;)
+        
+        info_html = f&quot;&quot;&quot;
+        &lt;div class=&quot;info-section&quot;&gt;
+            &lt;h3&gt;Browser Information&lt;/h3&gt;
+            &lt;p&gt;Name: {navigator.appName}&lt;/p&gt;
+            &lt;p&gt;Version: {navigator.appVersion}&lt;/p&gt;
+            &lt;p&gt;Platform: {navigator.platform}&lt;/p&gt;
+            &lt;p&gt;Language: {navigator.language}&lt;/p&gt;
+            &lt;p&gt;Online: {'Yes' if navigator.onLine else 'No'}&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;info-section&quot;&gt;
+            &lt;h3&gt;Screen Information&lt;/h3&gt;
+            &lt;p&gt;Resolution: {screen.width} x {screen.height}&lt;/p&gt;
+            &lt;p&gt;Available: {screen.availWidth} x {screen.availHeight}&lt;/p&gt;
+            &lt;p&gt;Color Depth: {screen.colorDepth} bits&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;info-section&quot;&gt;
+            &lt;h3&gt;Current Page&lt;/h3&gt;
+            &lt;p&gt;URL: {location.href}&lt;/p&gt;
+            &lt;p&gt;Protocol: {location.protocol}&lt;/p&gt;
+            &lt;p&gt;Host: {location.host}&lt;/p&gt;
+            &lt;p&gt;History Length: {history.length}&lt;/p&gt;
+        &lt;/div&gt;
+        &quot;&quot;&quot;
+        
+        info_container.innerHTML = info_html
+        console.log(&quot;System information updated&quot;)
+    
+    # Navigation controls
+    def setup_navigation():
+        # Back/Forward buttons
+        back_btn = ui.document.getElementById(&quot;backBtn&quot;)
+        forward_btn = ui.document.getElementById(&quot;forwardBtn&quot;)
+        reload_btn = ui.document.getElementById(&quot;reloadBtn&quot;)
+        
+        if back_btn:
+            back_btn.addEventListener(&quot;click&quot;, lambda: history.back())
+        
+        if forward_btn:
+            forward_btn.addEventListener(&quot;click&quot;, lambda: history.forward())
+        
+        if reload_btn:
+            reload_btn.addEventListener(&quot;click&quot;, lambda: location.reload())
+    
+    # Feature detection and adaptive UI
+    def setup_adaptive_features():
+        features_list = ui.document.getElementById(&quot;features&quot;)
+        
+        if navigator.cookieEnabled:
+            console.info(&quot;Cookies are enabled&quot;)
+            features_list.innerHTML += &quot;&lt;li&gt;Cookies supported&lt;/li&gt;&quot;
+        
+        if navigator.javaEnabled():
+            console.info(&quot;Java is enabled&quot;)
+            features_list.innerHTML += &quot;&lt;li&gt;Java supported&lt;/li&gt;&quot;
+        else:
+            console.warn(&quot;Java is not enabled&quot;)
+        
+        # Adjust UI based on screen size
+        if screen.width &lt; 768:
+            ui.document.body.classList.add(&quot;mobile-layout&quot;)
+            console.log(&quot;Mobile layout applied&quot;)
+        else:
+            ui.document.body.classList.add(&quot;desktop-layout&quot;)
+            console.log(&quot;Desktop layout applied&quot;)
+    
+    # Online/offline handling
+    def handle_connectivity():
+        def on_online():
+            console.log(&quot;Application is online&quot;)
+            status = ui.document.getElementById(&quot;connectionStatus&quot;)
+            if status:
+                status.innerText = &quot;Online&quot;
+                status.className = &quot;status-online&quot;
+        
+        def on_offline():
+            console.warn(&quot;Application is offline&quot;)
+            status = ui.document.getElementById(&quot;connectionStatus&quot;)
+            if status:
+                status.innerText = &quot;Offline&quot;
+                status.className = &quot;status-offline&quot;
+        
+        ui.htmlwindow.addEventListener(&quot;online&quot;, on_online)
+        ui.htmlwindow.addEventListener(&quot;offline&quot;, on_offline)
+        
+        # Initial status
+        if navigator.onLine:
+            on_online()
+        else:
+            on_offline()
+    
+    # Console logging demo
+    def demo_console_features():
+        console.group(&quot;Console Demo&quot;)
+        console.log(&quot;This is a normal log message&quot;)
+        console.info(&quot;This is an info message&quot;)
+        console.warn(&quot;This is a warning message&quot;)
+        console.error(&quot;This is an error message&quot;)
+        
+        console.time(&quot;demo-timer&quot;)
+        # Simulate some work
+        for i in range(3):
+            console.count(&quot;demo-counter&quot;)
+        console.timeEnd(&quot;demo-timer&quot;)
+        
+        console.groupEnd()
+        
+        # Demo button
+        demo_btn = ui.document.getElementById(&quot;consoleDemo&quot;)
+        if demo_btn:
+            demo_btn.addEventListener(&quot;click&quot;, lambda: console.table([
+                {&quot;Name&quot;: &quot;PyPositron&quot;, &quot;Type&quot;: &quot;Framework&quot;, &quot;Language&quot;: &quot;Python&quot;},
+                {&quot;Name&quot;: &quot;Webview&quot;, &quot;Type&quot;: &quot;Component&quot;, &quot;Language&quot;: &quot;JavaScript&quot;},
+                {&quot;Name&quot;: &quot;HTML&quot;, &quot;Type&quot;: &quot;Markup&quot;, &quot;Language&quot;: &quot;HTML&quot;}
+            ]))
+    
+    # Initialize all features
+    update_system_info()
+    setup_navigation()
+    setup_adaptive_features()
+    handle_connectivity()
+    demo_console_features()
+    
+    # Refresh button
+    refresh_btn = ui.document.getElementById(&quot;refreshBtn&quot;)
+    if refresh_btn:
+        refresh_btn.addEventListener(&quot;click&quot;, update_system_info)
+
+py_positron.openUI(
+    &quot;browser-objects-demo.html&quot;,
+    main=main,
+    title=&quot;Browser Objects Demo&quot;,
+    width=900,
+    height=700,
+    debug=True
+)
+</code></pre>
+<h2>Best Practices</h2>
+<ol>
+<li>
+<p><strong>Feature Detection</strong>: Always check if features are available before using them.</p>
+</li>
+<li>
+<p><strong>Error Handling</strong>: Wrap browser object operations in try-catch blocks as some features may not be available.</p>
+</li>
+<li>
+<p><strong>Performance</strong>: Cache browser object references if you use them frequently.</p>
+</li>
+<li>
+<p><strong>Responsive Design</strong>: Use screen properties to create adaptive layouts.</p>
+</li>
+<li>
+<p><strong>Debugging</strong>: Make good use of the Console object for debugging and logging.</p>
+</li>
+<li>
+<p><strong>Connectivity</strong>: Monitor online/offline status for web-dependent features.</p>
+</li>
+</ol>
+<h2>Related Documentation</h2>
+<ul>
+<li><strong><a href="HTMLWindow">HTMLWindow</a></strong>: The parent object that contains these browser objects</li>
+<li><strong><a href="Global-Functions">Global Functions</a></strong>: Main PyPositron functions</li>
+<li><strong><a href="Document">Document</a></strong>: DOM manipulation</li>
+</ul>
+
+                
+                <!-- 
+                ============================================
+                END OF CONVERTED DOCS INSERTION POINT
+                ============================================
+                -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Prism.js
+        Prism.manual = true;
+
+        // Copy button functionality for all code blocks
+        function addCopyButtons() {
+            const codeBlocks = document.querySelectorAll('pre[class*="language-"]');
+            
+            codeBlocks.forEach(pre => {
+                // Create container if it doesn't exist
+                if (!pre.parentElement.classList.contains('code-block-container')) {
+                    const container = document.createElement('div');
+                    container.className = 'code-block-container';
+                    pre.parentNode.insertBefore(container, pre);
+                    container.appendChild(pre);
+                }
+                
+                const container = pre.parentElement;
+                const codeElement = pre.querySelector('code');
+                
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = `
+                    <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                `;
+                
+                copyButton.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(codeElement.textContent);
+                        
+                        // Change to check icon
+                        copyButton.innerHTML = `
+                            <svg class="check-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        `;
+                        copyButton.classList.add('copied');
+                        
+                        // Revert back after 2 seconds
+                        setTimeout(() => {
+                            copyButton.innerHTML = `
+                                <svg class="copy-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            `;
+                            copyButton.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
+                
+                container.appendChild(copyButton);
+            });
+        }
+
+        // Sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-hidden');
+            overlay.classList.toggle('active');
+        }
+
+        // Smooth scrolling for sidebar links (only for anchor links)
+function setupSmoothScrolling() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // Only handle anchor links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Get target section
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Close mobile sidebar
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            } else {
+                // For regular links (to other pages), just close mobile sidebar if open
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+                // Let the browser handle the navigation normally
+            }
+        });
+    });
+}
+
+        // Highlight active section based on scroll position (only for anchor links)
+function setupScrollSpy() {
+    const sections = document.querySelectorAll('section[id], h1[id], h2[id], h3[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[href^="#"]'); // Only anchor links
+    
+    function updateActiveLink() {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            
+            if (window.scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink(); // Initial call
+}
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight syntax
+            Prism.highlightAll();
+            
+            // Add copy buttons after syntax highlighting
+            setTimeout(() => {
+                addCopyButtons();
+            }, 100);
+            
+            setupSmoothScrolling();
+            setupScrollSpy();
+        });
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (window.innerWidth < 768 && 
+                !sidebar.contains(e.target) && 
+                !e.target.closest('button[onclick="toggleSidebar()"]') &&
+                !sidebar.classList.contains('mobile-hidden')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>
