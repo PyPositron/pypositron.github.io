@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /convertscript/
+Sitemap: https://pypositron.github.io/sitemap.xml
